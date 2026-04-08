@@ -1,0 +1,10 @@
+For now,
+
+After cd into app folder: the end of your path should look like this "\eHotel\app"
+
+run npm install,
+run npm start,
+
+Now you should see "Server running at http://localhost:3000"
+
+Search that on whatever browser and it should be a basic html index page.
