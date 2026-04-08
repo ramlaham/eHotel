@@ -35,7 +35,7 @@
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🏩 Manage Hotels</h2>
-        <button class="btn btn-primary" onclick="openModal()">+ Add Hotel</button>
+        <button class="btn btn-primary" id="btnAddHotel">+ Add Hotel</button>
     </div>
     <div id="alertBox"></div>
 
@@ -214,6 +214,7 @@ $(function () {
         }
     });
 
+    $(document).on('click', '#btnAddHotel', function () { openModal(); });
     $(document).on('click', '.btn-edit', function () {
         const b = $(this);
         openModal(b.data('id'), b.data('chain'), b.data('category'), b.data('address'), b.data('email'), b.data('phone'));

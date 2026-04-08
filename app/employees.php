@@ -34,7 +34,7 @@
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🧑‍💼 Manage Employees</h2>
-        <button class="btn btn-primary" onclick="openModal()">+ Add Employee</button>
+        <button class="btn btn-primary" id="btnAddEmployee">+ Add Employee</button>
     </div>
     <div id="alertBox"></div>
 
@@ -206,6 +206,7 @@ $(function () {
         }
     });
 
+    $(document).on('click', '#btnAddEmployee', function () { openModal(); });
     $(document).on('click', '.btn-edit', function () {
         const b = $(this);
         openModal(b.data('id'), b.data('name'), b.data('ssn'), b.data('address'), b.data('role'), b.data('hotel'));

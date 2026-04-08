@@ -34,7 +34,7 @@
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>👤 Manage Clients</h2>
-        <button class="btn btn-primary" onclick="openModal()">+ Add Client</button>
+        <button class="btn btn-primary" id="btnAddClient">+ Add Client</button>
     </div>
     <div id="alertBox"></div>
 
@@ -175,6 +175,7 @@ $('#clientForm').on('submit', function (e) {
     });
 });
 
+$(document).on('click', '#btnAddClient', function () { openModal(); });
 // Event delegation for dynamically rendered buttons
 $(document).on('click', '.btn-edit', function () {
     const btn = $(this);

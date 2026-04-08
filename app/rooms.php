@@ -34,7 +34,7 @@
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🛏️ Manage Rooms</h2>
-        <button class="btn btn-primary" onclick="openModal()">+ Add Room</button>
+        <button class="btn btn-primary" id="btnAddRoom">+ Add Room</button>
     </div>
 
     <!-- Hotel Filter -->
@@ -48,7 +48,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-outline-primary" onclick="loadRooms()">Apply Filter</button>
+                    <button class="btn btn-outline-primary" id="btnApplyFilter">Apply Filter</button>
                 </div>
             </div>
         </div>
@@ -263,6 +263,8 @@ $(function () {
         loadRooms();
     });
 
+    $(document).on('click', '#btnAddRoom', function () { openModal(); });
+    $(document).on('click', '#btnApplyFilter', function () { loadRooms(); });
     $(document).on('click', '.btn-edit', function () {
         const b = $(this);
         openModal(b.data('id'), b.data('hotel'), b.data('price'), b.data('capacity'), b.data('view'),

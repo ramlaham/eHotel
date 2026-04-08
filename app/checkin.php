@@ -40,7 +40,7 @@
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
             <span class="fw-semibold">Active Reservations</span>
-            <button class="btn btn-sm btn-light" onclick="loadReservations()">↻ Refresh</button>
+            <button class="btn btn-sm btn-light" id="btnRefresh">↻ Refresh</button>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -118,7 +118,10 @@ function loadReservations() {
                     <td>${r.start_date}</td>
                     <td>${r.end_date}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="openCheckin(${r.reservation_id}, '${r.client_name}', '${r.hotel_address}')">
+                        <button class="btn btn-sm btn-primary btn-checkin"
+                            data-id="${r.reservation_id}"
+                            data-client="${(r.client_name || '').replace(/"/g, '&quot;')}"
+                            data-hotel="${(r.hotel_address || '').replace(/"/g, '&quot;')}">
                             Check In
                         </button>
                     </td>
@@ -163,6 +166,12 @@ $(function () {
                 $('#checkinEmployee').append(`<option value="${e.employee_id}">${e.full_name} — ${e.role || 'N/A'}</option>`);
             });
         }
+    });
+
+    $(document).on('click', '#btnRefresh', function () { loadReservations(); });
+    $(document).on('click', '.btn-checkin', function () {
+        const b = $(this);
+        openCheckin(b.data('id'), b.data('client'), b.data('hotel'));
     });
 });
 </script>
