@@ -162,7 +162,7 @@ function loadHotels() {
     });
 }
 
-function escQ(s) { return (s || '').replace(/'/g, "\\'"); }
+
 
 function openModal(id = '', chainId = '', cat = '', addr = '', email = '', phone = '') {
     $('#hotel_id').val(id);

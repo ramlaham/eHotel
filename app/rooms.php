@@ -206,7 +206,7 @@ function loadRooms() {
     });
 }
 
-function escQ(s) { return (s || '').replace(/'/g, "\\'"); }
+
 
 function openModal(id = '', hotelId = '', price = '', cap = '', view = '', amenities = '', damages = '', ext = false) {
     $('#room_id').val(id);

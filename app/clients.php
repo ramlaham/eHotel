@@ -135,7 +135,7 @@ function loadClients() {
     });
 }
 
-function escQ(s) { return (s || '').replace(/'/g, "\\'"); }
+
 
 function openModal(id = '', name = '', ssn = '', addr = '') {
     $('#client_id').val(id);

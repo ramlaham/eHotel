@@ -154,7 +154,7 @@ function loadEmployees() {
     });
 }
 
-function escQ(s) { return (s || '').replace(/'/g, "\\'"); }
+
 
 function openModal(id = '', name = '', ssn = '', addr = '', role = '', hotelId = '') {
     $('#employee_id').val(id);
