@@ -137,11 +137,16 @@ function loadEmployees() {
                     <td>${e.role || '-'}</td>
                     <td><small>${e.hotel_address || '-'}</small></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1"
-                            onclick="openModal(${e.employee_id}, '${escQ(e.full_name)}', '${escQ(e.ssn)}', '${escQ(e.address || '')}', '${escQ(e.role || '')}', ${e.hotel_id || 'null'})">
+                        <button class="btn btn-sm btn-outline-primary me-1 btn-edit"
+                            data-id="${e.employee_id}"
+                            data-name="${(e.full_name || '').replace(/"/g, '&quot;')}"
+                            data-ssn="${e.ssn}"
+                            data-address="${(e.address || '').replace(/"/g, '&quot;')}"
+                            data-role="${e.role || ''}"
+                            data-hotel="${e.hotel_id || ''}">
                             Edit
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteEmployee(${e.employee_id})">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${e.employee_id}">Delete</button>
                     </td>
                 </tr>`;
         });
@@ -199,6 +204,14 @@ $(function () {
                 $('#hotel_id').append(`<option value="${h.hotel_id}">${h.address} (${h.chain_name})</option>`);
             });
         }
+    });
+
+    $(document).on('click', '.btn-edit', function () {
+        const b = $(this);
+        openModal(b.data('id'), b.data('name'), b.data('ssn'), b.data('address'), b.data('role'), b.data('hotel'));
+    });
+    $(document).on('click', '.btn-delete', function () {
+        deleteEmployee($(this).data('id'));
     });
 });
 </script>

@@ -30,7 +30,7 @@ try {
             ':amenities'  => $amenities ?: null,
             ':capacity'   => $capacity,
             ':view'       => $view,
-            ':extendable' => $extendable ? 'TRUE' : 'FALSE',
+            ':extendable' => $extendable,
             ':damages'    => $damages ?: null,
             ':room_id'    => (int)$room_id,
         ]);
@@ -47,7 +47,7 @@ try {
             ':amenities'  => $amenities ?: null,
             ':capacity'   => $capacity,
             ':view'       => $view,
-            ':extendable' => $extendable ? 'TRUE' : 'FALSE',
+            ':extendable' => $extendable,
             ':damages'    => $damages ?: null,
         ]);
         $new_id = $stmt->fetchColumn();

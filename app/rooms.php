@@ -175,6 +175,7 @@ function loadRooms() {
             const ext = r.extendable == 't' || r.extendable === true
                 ? '<span class="badge bg-success">Yes</span>'
                 : '<span class="badge bg-secondary">No</span>';
+            const extBool = r.extendable == 't' || r.extendable === true;
             html += `
                 <tr>
                     <td>${r.room_id}</td>
@@ -186,11 +187,18 @@ function loadRooms() {
                     <td><small>${r.amenities || '-'}</small></td>
                     <td><small class="text-warning">${r.damages || '-'}</small></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1"
-                            onclick="openModal(${r.room_id}, ${r.hotel_id}, '${parseFloat(r.price).toFixed(2)}', '${r.capacity}', '${r.view}', '${escQ(r.amenities || '')}', '${escQ(r.damages || '')}', ${r.extendable == 't' ? 'true' : 'false'})">
+                        <button class="btn btn-sm btn-outline-primary me-1 btn-edit"
+                            data-id="${r.room_id}"
+                            data-hotel="${r.hotel_id}"
+                            data-price="${parseFloat(r.price).toFixed(2)}"
+                            data-capacity="${r.capacity}"
+                            data-view="${r.view}"
+                            data-amenities="${(r.amenities || '').replace(/"/g, '&quot;')}"
+                            data-damages="${(r.damages || '').replace(/"/g, '&quot;')}"
+                            data-ext="${extBool}">
                             Edit
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(${r.room_id})">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${r.room_id}">Delete</button>
                     </td>
                 </tr>`;
         });
@@ -253,6 +261,15 @@ $(function () {
             });
         }
         loadRooms();
+    });
+
+    $(document).on('click', '.btn-edit', function () {
+        const b = $(this);
+        openModal(b.data('id'), b.data('hotel'), b.data('price'), b.data('capacity'), b.data('view'),
+                  b.data('amenities'), b.data('damages'), b.data('ext') === true || b.data('ext') === 'true');
+    });
+    $(document).on('click', '.btn-delete', function () {
+        deleteRoom($(this).data('id'));
     });
 });
 </script>

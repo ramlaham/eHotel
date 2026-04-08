@@ -145,11 +145,16 @@ function loadHotels() {
                     <td><small>${h.email || '-'}</small></td>
                     <td><small>${h.phone || '-'}</small></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1"
-                            onclick="openModal(${h.hotel_id}, ${h.chain_id}, ${h.category}, '${escQ(h.address)}', '${escQ(h.email || '')}', '${escQ(h.phone || '')}')">
+                        <button class="btn btn-sm btn-outline-primary me-1 btn-edit"
+                            data-id="${h.hotel_id}"
+                            data-chain="${h.chain_id}"
+                            data-category="${h.category}"
+                            data-address="${h.address.replace(/"/g, '&quot;')}"
+                            data-email="${(h.email || '').replace(/"/g, '&quot;')}"
+                            data-phone="${(h.phone || '').replace(/"/g, '&quot;')}">
                             Edit
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteHotel(${h.hotel_id})">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${h.hotel_id}">Delete</button>
                     </td>
                 </tr>`;
         });
@@ -207,6 +212,14 @@ $(function () {
                 $('#chain_id').append(`<option value="${c.chain_id}">${c.name}</option>`);
             });
         }
+    });
+
+    $(document).on('click', '.btn-edit', function () {
+        const b = $(this);
+        openModal(b.data('id'), b.data('chain'), b.data('category'), b.data('address'), b.data('email'), b.data('phone'));
+    });
+    $(document).on('click', '.btn-delete', function () {
+        deleteHotel($(this).data('id'));
     });
 });
 </script>

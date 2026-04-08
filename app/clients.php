@@ -120,11 +120,14 @@ function loadClients() {
                     <td>${c.address || '-'}</td>
                     <td>${c.registration_date}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1"
-                            onclick="openModal(${c.client_id}, '${escQ(c.full_name)}', '${escQ(c.ssn)}', '${escQ(c.address || '')}')">
+                        <button class="btn btn-sm btn-outline-primary me-1 btn-edit"
+                            data-id="${c.client_id}"
+                            data-name="${c.full_name.replace(/"/g, '&quot;')}"
+                            data-ssn="${c.ssn}"
+                            data-address="${(c.address || '').replace(/"/g, '&quot;')}">
                             Edit
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${c.client_id})">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${c.client_id}">Delete</button>
                     </td>
                 </tr>`;
         });
@@ -170,6 +173,15 @@ $('#clientForm').on('submit', function (e) {
             showAlert('danger', res.error);
         }
     });
+});
+
+// Event delegation for dynamically rendered buttons
+$(document).on('click', '.btn-edit', function () {
+    const btn = $(this);
+    openModal(btn.data('id'), btn.data('name'), btn.data('ssn'), btn.data('address'));
+});
+$(document).on('click', '.btn-delete', function () {
+    deleteClient($(this).data('id'));
 });
 
 $(loadClients);

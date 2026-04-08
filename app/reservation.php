@@ -127,8 +127,6 @@ $(function () {
 
     // Load room details
     if (roomId) {
-        $.get(`api/get_rooms.php?hotel_id=`, function () {}).always(function () {});
-        // Fetch all rooms to find this one
         $.get('api/get_rooms.php', function (res) {
             if (res.success) {
                 const room = res.data.find(r => r.room_id == roomId);
