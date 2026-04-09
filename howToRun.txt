@@ -1,5 +1,8 @@
 For now,
 
+you might have to run this before "npm install" : Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Try without it first, but if it doesnt work, do it.
+
 After cd into app folder: the end of your path should look like this "\eHotel\app"
 
 run "npm install",
