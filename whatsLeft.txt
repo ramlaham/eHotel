@@ -1,0 +1,23 @@
+Fix search table in reservations: 
+    - select client should be a ddl as well as an option to write name
+    - 
+
+Fix search table in rentals: 
+    - process by employee should only be selectable after choosing hotel (there should also only be the employees specific to that hotel)
+    - 
+
+Fix create direct rental table in rentals:
+    - processed by employee options should only be the employees of the specific hotel of that reservation
+
+Fix add employee table in employees:
+    - First name should have the name example and only letters allowed
+    - Last name should have the name example and only letters allowed
+    - Address should be this format, 8 Street Rd
+    - Role should be a ddl with the 3 options
+    - ssn is already fixed
+
+Fix add client table in clients:
+    - First name should have the name example and only letters allowed
+    - Last name should have the name example and only letters allowed
+    - Address should be this format, 8 Street Rd
+    - ssn is already fixed

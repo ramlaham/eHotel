@@ -54,13 +54,23 @@
                         <div><label>Hotel</label><select id="hotelId" required>
                                 <option value="">Select a hotel</option>
                             </select></div>
-                        <div><label>First Name</label><input id="firstName" required /></div>
-                        <div><label>Last Name</label><input id="lastName" required /></div>
-                        <div><label>Address</label><input id="address" required /></div>
-                        <div><label>SSN</label><input id="ssn" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" placeholder="123-456-789" /></div>
-                        <div><label>Role</label><input id="role" required /></div>
+                        <div><label>First Name</label><input id="firstName" required
+                                pattern="[A-Za-z]+(?:[ -][A-Za-z]+)*" placeholder="John" /></div>
+                        <div><label>Last Name</label><input id="lastName" required pattern="[A-Za-z]+(?:[ -][A-Za-z]+)*"
+                                placeholder="Smith" /></div>
+                        <div><label>Address</label><input id="address" required
+                                pattern="^[0-9]+\\s+[A-Za-z]+(?:\\s+[A-Za-z]+)*\\s+(St|Street|Rd|Road|Ave|Avenue|Dr|Drive|Blvd|Boulevard)$"
+                                placeholder="8 Street Rd" /></div>
+                        <div><label>SSN</label><input id="ssn" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
+                                placeholder="123-456-789" /></div>
+                        <div><label>Role</label><select id="role" required>
+                                <option value="">Select a role</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Receptionist">Receptionist</option>
+                                <option value="Clerk">Clerk</option>
+                            </select></div>
                     </div>
-                    <br/>
+                    <br />
                     <button type="submit" class="green-btn">ADD EMPLOYEE</button>
                 </form>
                 <div id="message" class="message"></div>

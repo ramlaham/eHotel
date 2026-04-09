@@ -72,7 +72,7 @@
 
                         <div>
                             <label for="directEmployeeId">Processed By Employee</label>
-                            <select id="directEmployeeId" required>
+                            <select id="directEmployeeId" required disabled>
                                 <option value="">Select an employee</option>
                             </select>
                         </div>
@@ -96,7 +96,7 @@
                             <input type="date" id="directEndDate" required />
                         </div>
                     </div>
-                    <br/>
+                    <br />
 
                     <button type="submit" class="green-btn">RENT ROOM</button>
                 </form>
@@ -116,7 +116,7 @@
 
                         <div>
                             <label for="convertEmployeeId">Processed By Employee</label>
-                            <select id="convertEmployeeId" required>
+                            <select id="convertEmployeeId" required disabled>
                                 <option value="">Select an employee</option>
                             </select>
                         </div>
@@ -130,7 +130,7 @@
                             </select>
                         </div>
                     </div>
-                    <br/>
+                    <br />
 
                     <button type="submit" class="green-btn">CONVERT RESERVATION</button>
                 </form>
@@ -188,6 +188,21 @@
     </div>
 
     <script>
+        let convertibleReservations = [];
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                hotelId: params.get('hotelId'),
+                roomNumber: params.get('roomNumber')
+            };
+        }
+
+        function getTodayDateString() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
+
         async function loadClients() {
             const res = await fetch('/api/clients');
             const clients = await res.json();
@@ -236,29 +251,39 @@
             });
         }
 
-        async function loadEmployees() {
-            const res = await fetch('/api/employees');
-            const employees = await res.json();
+        async function loadEmployeesByHotel(hotelId, selectId) {
+            const select = document.getElementById(selectId);
 
-            const selects = [
-                document.getElementById('directEmployeeId'),
-                document.getElementById('convertEmployeeId')
-            ];
+            select.innerHTML = '<option value="">Select an employee</option>';
 
-            selects.forEach(select => {
-                select.innerHTML = '<option value="">Select an employee</option>';
+            if (!hotelId) {
+                select.disabled = true;
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/employees-by-hotel/${hotelId}`);
+                const employees = await res.json();
+
+                select.disabled = false;
+
                 employees.forEach(emp => {
                     const option = document.createElement('option');
                     option.value = emp.employee_id;
-                    option.textContent = `${emp.employee_id} - ${emp.first_name} ${emp.last_name} (${emp.hotel_name})`;
+                    option.textContent = `${emp.employee_id} - ${emp.first_name} ${emp.last_name} (${emp.role})`;
                     select.appendChild(option);
                 });
-            });
+            } catch (error) {
+                console.error('Error loading employees by hotel:', error);
+                select.disabled = true;
+            }
         }
 
         async function loadConvertibleReservations() {
             const res = await fetch('/api/convertible-reservations');
             const reservations = await res.json();
+
+            convertibleReservations = reservations;
 
             const select = document.getElementById('reservationId');
             select.innerHTML = '<option value="">Select a reservation</option>';
@@ -280,25 +305,25 @@
             rentals.forEach(r => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-          <td>${r.rental_id}</td>
-          <td>${r.client_name}</td>
-          <td>${r.hotel_name}</td>
-          <td>${r.room_number}</td>
-          <td>${r.rental_start_date}</td>
-          <td>${r.rental_end_date}</td>
-          <td>
-            <select class="status-select" onchange="updateRentalStatus(${r.rental_id}, this.value)">
-              <option value="active" ${r.status === 'active' ? 'selected' : ''}>active</option>
-              <option value="completed" ${r.status === 'completed' ? 'selected' : ''}>completed</option>
-              <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>cancelled</option>
-            </select>
-          </td>
-          <td>${r.processed_by || ''}</td>
-          <td>${r.reservation_id || ''}</td>
-          <td>
-            <button class="action-btn green-btn" onclick="deleteRental(${r.rental_id})">DELETE</button>
-          </td>
-        `;
+        <td>${r.rental_id}</td>
+        <td>${r.client_name}</td>
+        <td>${r.hotel_name}</td>
+        <td>${r.room_number}</td>
+        <td>${r.rental_start_date}</td>
+        <td>${r.rental_end_date}</td>
+        <td>
+          <select class="status-select" onchange="updateRentalStatus(${r.rental_id}, this.value)">
+            <option value="active" ${r.status === 'active' ? 'selected' : ''}>active</option>
+            <option value="completed" ${r.status === 'completed' ? 'selected' : ''}>completed</option>
+            <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>cancelled</option>
+          </select>
+        </td>
+        <td>${r.processed_by || ''}</td>
+        <td>${r.reservation_id || ''}</td>
+        <td>
+          <button class="action-btn green-btn" onclick="deleteRental(${r.rental_id})">DELETE</button>
+        </td>
+      `;
                 tbody.appendChild(row);
             });
         }
@@ -335,13 +360,39 @@
                 document.getElementById('directRentalMessage').textContent = `Rental ${rentalId} deleted successfully.`;
                 await loadRentals();
                 await loadConvertibleReservations();
+
+                document.getElementById('convertEmployeeId').innerHTML = '<option value="">Select an employee</option>';
+                document.getElementById('convertEmployeeId').disabled = true;
             } catch (error) {
                 document.getElementById('directRentalMessage').textContent = error.message;
             }
         }
 
         document.getElementById('directHotelId').addEventListener('change', async (e) => {
-            await loadRoomsForHotel(e.target.value);
+            const hotelId = e.target.value;
+
+            await loadRoomsForHotel(hotelId);
+            await loadEmployeesByHotel(hotelId, 'directEmployeeId');
+        });
+
+        document.getElementById('reservationId').addEventListener('change', async (e) => {
+            const reservationId = e.target.value;
+
+            const selectedReservation = convertibleReservations.find(
+                r => String(r.reservation_id) === String(reservationId)
+            );
+
+            if (selectedReservation) {
+                await loadEmployeesByHotel(selectedReservation.hotel_id, 'convertEmployeeId');
+            } else {
+                const select = document.getElementById('convertEmployeeId');
+                select.innerHTML = '<option value="">Select an employee</option>';
+                select.disabled = true;
+            }
+        });
+
+        document.getElementById('directStartDate').addEventListener('change', (e) => {
+            document.getElementById('directEndDate').min = e.target.value;
         });
 
         document.getElementById('directRentalForm').addEventListener('submit', async (e) => {
@@ -372,6 +423,14 @@
                 messageDiv.textContent = `Direct rental ${data.rental_id} created successfully.`;
                 document.getElementById('directRentalForm').reset();
                 document.getElementById('directRoomNumber').innerHTML = '<option value="">Select a room</option>';
+                document.getElementById('directEmployeeId').innerHTML = '<option value="">Select an employee</option>';
+                document.getElementById('directEmployeeId').disabled = true;
+
+                const today = getTodayDateString();
+                document.getElementById('directStartDate').value = today;
+                document.getElementById('directStartDate').min = today;
+                document.getElementById('directEndDate').min = today;
+
                 await loadRentals();
                 await loadConvertibleReservations();
             } catch (error) {
@@ -402,6 +461,10 @@
 
                 messageDiv.textContent = `Reservation ${payload.reservationId} converted to rental ${data.rental_id}.`;
                 document.getElementById('convertForm').reset();
+
+                document.getElementById('convertEmployeeId').innerHTML = '<option value="">Select an employee</option>';
+                document.getElementById('convertEmployeeId').disabled = true;
+
                 await loadRentals();
                 await loadConvertibleReservations();
             } catch (error) {
@@ -409,33 +472,26 @@
             }
         });
 
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                hotelId: params.get('hotelId'),
-                roomNumber: params.get('roomNumber')
-            };
-        }
-
-        function getTodayDateString() {
-            const today = new Date();
-            return today.toISOString().split('T')[0];
-        }
-
         async function initPage() {
             await loadClients();
             await loadHotels();
-            await loadEmployees();
             await loadConvertibleReservations();
             await loadRentals();
 
             const { hotelId, roomNumber } = getQueryParams();
 
-            document.getElementById('directStartDate').value = getTodayDateString();
+            const today = getTodayDateString();
+            document.getElementById('directStartDate').value = today;
+            document.getElementById('directStartDate').min = today;
+            document.getElementById('directEndDate').min = today;
+
+            document.getElementById('directEmployeeId').disabled = true;
+            document.getElementById('convertEmployeeId').disabled = true;
 
             if (hotelId) {
                 document.getElementById('directHotelId').value = hotelId;
                 await loadRoomsForHotel(hotelId);
+                await loadEmployeesByHotel(hotelId, 'directEmployeeId');
 
                 if (roomNumber) {
                     document.getElementById('directRoomNumber').value = roomNumber;

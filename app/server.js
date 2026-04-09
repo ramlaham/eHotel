@@ -13,6 +13,14 @@ function isValidSSN(ssn) {
   return /^[0-9]{3}-[0-9]{3}-[0-9]{3}$/.test(ssn);
 }
 
+function isValidName(name) {
+  return /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(name);
+}
+
+function isValidAddress(address) {
+  return /^[0-9]+\s+[A-Za-z]+(?:\s+[A-Za-z]+)*\s+(St|Street|Rd|Road|Ave|Avenue|Dr|Drive|Blvd|Boulevard)$/.test(address);
+}
+
 app.post('/api/search-rooms', async (req, res) => {
   try {
     const {
@@ -269,6 +277,24 @@ app.get('/api/rentals', async (req, res) => {
   }
 });
 
+app.get('/api/employees-by-hotel/:hotelId', async (req, res) => {
+  try {
+    const { hotelId } = req.params;
+
+    const result = await pool.query(`
+      SELECT employee_id, first_name, last_name, role
+      FROM employee
+      WHERE hotel_id = $1
+      ORDER BY first_name, last_name
+    `, [hotelId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching employees by hotel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/convertible-reservations', async (req, res) => {
   try {
     const result = await pool.query(`
@@ -418,6 +444,18 @@ app.post('/api/clients', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
+    if (!isValidName(firstName)) {
+      return res.status(400).json({ error: 'First name must contain letters only.' });
+    }
+
+    if (!isValidName(lastName)) {
+      return res.status(400).json({ error: 'Last name must contain letters only.' });
+    }
+
+    if (!isValidAddress(address)) {
+      return res.status(400).json({ error: 'Address must be in a format like 8 Street Rd.' });
+    }
+
     if (!isValidSSN(ssn)) {
       return res.status(400).json({ error: 'SSN must be in the format 999-999-999.' });
     }
@@ -459,6 +497,22 @@ app.get('/api/employees/full', async (req, res) => {
 app.post('/api/employees', async (req, res) => {
   try {
     const { hotelId, firstName, lastName, address, ssn, role } = req.body;
+
+    if (!isValidName(firstName)) {
+      return res.status(400).json({ error: 'First name must contain letters only.' });
+    }
+
+    if (!isValidName(lastName)) {
+      return res.status(400).json({ error: 'Last name must contain letters only.' });
+    }
+
+    if (!isValidAddress(address)) {
+      return res.status(400).json({ error: 'Address must be in a format like 8 Street Rd.' });
+    }
+
+    if (!['Manager', 'Receptionist', 'Clerk'].includes(role)) {
+      return res.status(400).json({ error: 'Role must be Manager, Receptionist, or Clerk.' });
+    }
 
     if (!hotelId || !firstName || !lastName || !address || !ssn || !role) {
       return res.status(400).json({ error: 'All fields are required.' });
