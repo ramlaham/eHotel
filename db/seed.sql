@@ -58,61 +58,57 @@ VALUES
 -- =========================================================
 INSERT INTO hotel (hotel_id, chain_id, hotel_name, category, address, area, room_count)
 VALUES
-(1,  1, 'Parliament Grand Ottawa',      3, '101 Wellington St, Ottawa, ON',         'Centretown',       5),
-(2,  1, 'Rideau View Suites',           4, '55 Rideau St, Ottawa, ON',               'ByWard Market',    5),
-(3,  1, 'ByWard Market Inn',            5, '78 York St, Ottawa, ON',                 'The Glebe',        5),
-(4,  1, 'Canal Crest Hotel',            2, '120 Preston St, Ottawa, ON',             'Westboro',         5),
-(5,  1, 'Lansdowne Stay',               1, '35 Bank St, Ottawa, ON',                 'Centretown',       5),
-(6,  1, 'Glebe Garden Hotel',           3, '88 Holmwood Ave, Ottawa, ON',            'Sandy Hill',       5),
-(7,  1, 'Capital Crown Suites',         4, '150 Elgin St, Ottawa, ON',               'Little Italy',     5),
-(8,  1, 'Elgin Plaza Hotel',            5, '210 Elgin St, Ottawa, ON',               'Ottawa South',     5),
+(1,  1, 'Parliament Grand Ottawa',      3, '101 Wellington St, Ottawa, ON',         'Nepean',    5),
+(2,  1, 'Rideau View Suites',           4, '55 Rideau St, Ottawa, ON',               'Kanata',    5),
+(3,  1, 'ByWard Market Inn',            5, '78 York St, Ottawa, ON',                 'Barrhaven', 5),
+(4,  1, 'Canal Crest Hotel',            2, '120 Preston St, Ottawa, ON',             'Orleans',   5),
+(5,  1, 'Lansdowne Stay',               1, '35 Bank St, Ottawa, ON',                 'Vanier',    5),
+(6,  1, 'Glebe Garden Hotel',           3, '88 Holmwood Ave, Ottawa, ON',            'Nepean',    5),
+(7,  1, 'Capital Crown Suites',         4, '150 Elgin St, Ottawa, ON',               'Kanata',    5),
+(8,  1, 'Elgin Plaza Hotel',            5, '210 Elgin St, Ottawa, ON',               'Barrhaven', 5),
 
-(9,  2, 'Maple Leaf Executive Hotel',   2, '400 Terry Fox Dr, Ottawa, ON',           'Kanata',           5),
-(10, 2, 'Ottawa River Retreat',         1, '500 St Joseph Blvd, Ottawa, ON',         'Orleans',          5),
-(11, 2, 'Confederation Square Lodge',   3, '250 Baseline Rd, Ottawa, ON',            'Nepean',           5),
-(12, 2, 'Somerset Sky Hotel',           4, '300 Somerset St W, Ottawa, ON',          'Downtown',         5),
-(13, 2, 'Beacon Hill Suites',           5, '650 Montreal Rd, Ottawa, ON',            'Centretown',       5),
-(14, 2, 'Westboro Urban Stay',          2, '320 Richmond Rd, Ottawa, ON',            'Westboro',         5),
-(15, 2, 'Rockcliffe Manor Hotel',       1, '45 Springfield Rd, Ottawa, ON',          'Rockcliffe Park',  5),
-(16, 2, 'Carleton Heights Inn',         3, '180 Heron Rd, Ottawa, ON',               'Alta Vista',       5),
+(9,  2, 'Maple Leaf Executive Hotel',   2, '400 Terry Fox Dr, Ottawa, ON',           'Orleans',   5),
+(10, 2, 'Ottawa River Retreat',         1, '500 St Joseph Blvd, Ottawa, ON',         'Vanier',    5),
+(11, 2, 'Confederation Square Lodge',   3, '250 Baseline Rd, Ottawa, ON',            'Nepean',    5),
+(12, 2, 'Somerset Sky Hotel',           4, '300 Somerset St W, Ottawa, ON',          'Kanata',    5),
+(13, 2, 'Beacon Hill Suites',           5, '650 Montreal Rd, Ottawa, ON',            'Barrhaven', 5),
+(14, 2, 'Westboro Urban Stay',          2, '320 Richmond Rd, Ottawa, ON',            'Orleans',   5),
+(15, 2, 'Rockcliffe Manor Hotel',       1, '45 Springfield Rd, Ottawa, ON',          'Vanier',    5),
+(16, 2, 'Carleton Heights Inn',         3, '180 Heron Rd, Ottawa, ON',               'Nepean',    5),
 
-(17, 3, 'Aurora Parliament Suites',     4, '90 Sparks St, Ottawa, ON',               'Downtown',         5),
-(18, 3, 'Downtown Crescent Hotel',      5, '140 Laurier Ave W, Ottawa, ON',          'Centretown',       5),
-(19, 3, 'Rideau Royale Inn',            2, '60 George St, Ottawa, ON',               'ByWard Market',    5),
-(20, 3, 'Canal Bridge Hotel',           1, '75 Queen Elizabeth Dr, Ottawa, ON',      'The Glebe',        5),
-(21, 3, 'The Ottawa Regent',            3, '222 Slater St, Ottawa, ON',              'Sandy Hill',       5),
-(22, 3, 'Market Street Suites',         4, '110 Clarence St, Ottawa, ON',            'Little Italy',     5),
-(23, 3, 'Merivale Comfort Hotel',       5, '188 Merivale Rd, Ottawa, ON',            'Merivale',         5),
-(24, 3, 'Preston House Hotel',          2, '130 Preston St, Ottawa, ON',             'Preston Street',   5),
+(17, 3, 'Aurora Parliament Suites',     4, '90 Sparks St, Ottawa, ON',               'Kanata',    5),
+(18, 3, 'Downtown Crescent Hotel',      5, '140 Laurier Ave W, Ottawa, ON',          'Barrhaven', 5),
+(19, 3, 'Rideau Royale Inn',            2, '60 George St, Ottawa, ON',               'Orleans',   5),
+(20, 3, 'Canal Bridge Hotel',           1, '75 Queen Elizabeth Dr, Ottawa, ON',      'Vanier',    5),
+(21, 3, 'The Ottawa Regent',            3, '222 Slater St, Ottawa, ON',              'Nepean',    5),
+(22, 3, 'Market Street Suites',         4, '110 Clarence St, Ottawa, ON',            'Kanata',    5),
+(23, 3, 'Merivale Comfort Hotel',       5, '188 Merivale Rd, Ottawa, ON',            'Barrhaven', 5),
+(24, 3, 'Preston House Hotel',          2, '130 Preston St, Ottawa, ON',             'Orleans',   5),
 
-(25, 4, 'Cedar Crown Ottawa',           1, '500 River Rd, Ottawa, ON',               'Riverside South',  5),
-(26, 4, 'Embassy Row Hotel',            3, '1 Sussex Dr, Ottawa, ON',                'Embassy Row',      5),
-(27, 4, 'Blue Heron Lodge',             4, '700 Innes Rd, Ottawa, ON',               'Orleans',          5),
-(28, 4, 'Golden Maple Inn',             5, '350 March Rd, Ottawa, ON',               'Kanata',           5),
-(29, 4, 'Wellington Court Hotel',       2, '420 Wellington St W, Ottawa, ON',        'Wellington West',  5),
-(30, 4, 'Centretown Signature Suites',  1, '170 Metcalfe St, Ottawa, ON',            'Centretown',       5),
-(31, 4, 'Riverside Grand Hotel',        3, '60 Riverside Dr, Ottawa, ON',            'Riverside Park',   5),
-(32, 4, 'Airport Beacon Hotel',         4, '1000 Airport Pkwy Private, Ottawa, ON',  'Ottawa Airport',   5),
+(25, 4, 'Cedar Crown Ottawa',           1, '500 River Rd, Ottawa, ON',               'Vanier',    5),
+(26, 4, 'Embassy Row Hotel',            3, '1 Sussex Dr, Ottawa, ON',                'Nepean',    5),
+(27, 4, 'Blue Heron Lodge',             4, '700 Innes Rd, Ottawa, ON',               'Kanata',    5),
+(28, 4, 'Golden Maple Inn',             5, '350 March Rd, Ottawa, ON',               'Barrhaven', 5),
+(29, 4, 'Wellington Court Hotel',       2, '420 Wellington St W, Ottawa, ON',        'Orleans',   5),
+(30, 4, 'Centretown Signature Suites',  1, '170 Metcalfe St, Ottawa, ON',            'Vanier',    5),
+(31, 4, 'Riverside Grand Hotel',        3, '60 Riverside Dr, Ottawa, ON',            'Nepean',    5),
+(32, 4, 'Airport Beacon Hotel',         4, '1000 Airport Pkwy Private, Ottawa, ON',  'Kanata',    5),
 
-(33, 5, 'BlueWave Capital Hotel',       5, '99 Albert St, Ottawa, ON',               'Downtown',         5),
-(34, 5, 'Ottawa Horizon Suites',        2, '250 O''Connor St, Ottawa, ON',           'Centretown',       5),
-(35, 5, 'Victoria Park Inn',            1, '40 Sunnyside Ave, Ottawa, ON',           'Old Ottawa South', 5),
-(36, 5, 'King Edward Hotel',            3, '24 Crichton St, Ottawa, ON',             'New Edinburgh',    5),
-(37, 5, 'Chateau Laurier View',         4, '1 Rideau St, Ottawa, ON',                'ByWard Market',    5),
-(38, 5, 'Capital Harbour Suites',       5, '85 Nicholas St, Ottawa, ON',             'Sandy Hill',       5),
-(39, 5, 'Stonebridge Hotel Ottawa',     2, '900 Greenbank Rd, Ottawa, ON',           'Barrhaven',        5),
-(40, 5, 'Northern Lights Plaza',        1, '525 Legget Dr, Ottawa, ON',              'Kanata',           5);
+(33, 5, 'BlueWave Capital Hotel',       5, '99 Albert St, Ottawa, ON',               'Barrhaven', 5),
+(34, 5, 'Ottawa Horizon Suites',        2, '250 O''Connor St, Ottawa, ON',           'Orleans',   5),
+(35, 5, 'Victoria Park Inn',            1, '40 Sunnyside Ave, Ottawa, ON',           'Vanier',    5),
+(36, 5, 'King Edward Hotel',            3, '24 Crichton St, Ottawa, ON',             'Nepean',    5),
+(37, 5, 'Chateau Laurier View',         4, '1 Rideau St, Ottawa, ON',                'Kanata',    5),
+(38, 5, 'Capital Harbour Suites',       5, '85 Nicholas St, Ottawa, ON',             'Barrhaven', 5),
+(39, 5, 'Stonebridge Hotel Ottawa',     2, '900 Greenbank Rd, Ottawa, ON',           'Orleans',   5),
+(40, 5, 'Northern Lights Plaza',        1, '525 Legget Dr, Ottawa, ON',              'Vanier',    5);
 
 INSERT INTO hotel_email (hotel_id, email_address)
-SELECT
-    hotel_id,
-    'hotel' || hotel_id || '@ehotels.ca'
+SELECT hotel_id, 'hotel' || hotel_id || '@ehotels.ca'
 FROM hotel;
 
 INSERT INTO hotel_phone (hotel_id, phone_number)
-SELECT
-    hotel_id,
-    '613-600-' || LPAD(hotel_id::text, 4, '0')
+SELECT hotel_id, '613-600-' || LPAD(hotel_id::text, 4, '0')
 FROM hotel;
 
 -- =========================================================
@@ -135,8 +131,6 @@ VALUES
 
 -- =========================================================
 -- 4) EMPLOYEES
--- 3 employees per hotel = 120 employees
--- employee 1 of each hotel will later become the manager
 -- =========================================================
 INSERT INTO employee (employee_id, hotel_id, first_name, last_name, address, ssn, role)
 SELECT
@@ -166,18 +160,13 @@ CROSS JOIN (VALUES (1), (2), (3)) AS e(n);
 
 -- =========================================================
 -- 5) HOTEL MANAGERS
--- first employee of each hotel
 -- =========================================================
 INSERT INTO hotel_manager (hotel_id, manager_employee_id)
-SELECT
-    hotel_id,
-    ((hotel_id - 1) * 3) + 1
+SELECT hotel_id, ((hotel_id - 1) * 3) + 1
 FROM hotel;
 
 -- =========================================================
 -- 6) ROOMS
--- 5 rooms per hotel = 200 rooms
--- room numbers: 101-105
 -- =========================================================
 INSERT INTO room (
     hotel_id,
@@ -219,10 +208,7 @@ SELECT
         WHEN 3 THEN 'Sea'
         ELSE 'Garden'
     END AS view_type,
-    CASE
-        WHEN r.n IN (2, 4, 5) THEN TRUE
-        ELSE FALSE
-    END AS extra_bed_possible,
+    CASE WHEN r.n IN (2, 4, 5) THEN TRUE ELSE FALSE END AS extra_bed_possible,
     'No damages' AS condition_state
 FROM hotel h
 CROSS JOIN (VALUES (1), (2), (3), (4), (5)) AS r(n);
@@ -231,12 +217,10 @@ CROSS JOIN (VALUES (1), (2), (3), (4), (5)) AS r(n);
 -- 7) ROOM AMENITIES
 -- =========================================================
 INSERT INTO room_amenity (hotel_id, room_number, amenity)
-SELECT hotel_id, room_number, 'WiFi'
-FROM room;
+SELECT hotel_id, room_number, 'WiFi' FROM room;
 
 INSERT INTO room_amenity (hotel_id, room_number, amenity)
-SELECT hotel_id, room_number, 'TV'
-FROM room;
+SELECT hotel_id, room_number, 'TV' FROM room;
 
 INSERT INTO room_amenity (hotel_id, room_number, amenity)
 SELECT hotel_id, room_number, 'Air Conditioning'
@@ -255,7 +239,6 @@ WHERE view_type = 'Sea';
 
 -- =========================================================
 -- 8) RESERVATIONS
--- Keep them non-conflicting with trigger rules
 -- =========================================================
 INSERT INTO reservation (
     reservation_id,
@@ -279,8 +262,6 @@ VALUES
 
 -- =========================================================
 -- 9) RENTALS
--- Includes direct rentals and one valid reservation->rental conversion
--- Keep them non-conflicting with trigger rules
 -- =========================================================
 INSERT INTO rental (
     rental_id,
