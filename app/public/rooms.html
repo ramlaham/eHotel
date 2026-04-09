@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooms - e-Hotels</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
+    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #efefef; }
+  </style>
+</head>
+<body>
+  <a href="/">← Back to Home</a>
+  <h1>Rooms</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Hotel</th><th>Room</th><th>Price</th><th>Capacity</th><th>Surface</th><th>View</th><th>Extra Bed</th><th>Condition</th>
+      </tr>
+    </thead>
+    <tbody id="roomTableBody"></tbody>
+  </table>
+
+  <script>
+    async function loadRooms() {
+      const res = await fetch('/api/rooms');
+      const rooms = await res.json();
+      const tbody = document.getElementById('roomTableBody');
+      tbody.innerHTML = '';
+      rooms.forEach(r => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${r.hotel_name}</td>
+          <td>${r.room_number}</td>
+          <td>$${r.price}</td>
+          <td>${r.capacity}</td>
+          <td>${r.surface_area}</td>
+          <td>${r.view_type}</td>
+          <td>${r.extra_bed_possible ? 'Yes' : 'No'}</td>
+          <td>${r.condition_state}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    loadRooms();
+  </script>
+</body>
+</html>

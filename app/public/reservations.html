@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservations - e-Hotels</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f7f7f7;
+    }
+    h1, h2 {
+      margin-bottom: 15px;
+    }
+    form, .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 1000px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 15px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background: #efefef;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .message {
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    .action-btn {
+      width: auto;
+      padding: 8px 12px;
+      margin-top: 0;
+    }
+    .status-select {
+      width: 100%;
+      min-width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="/">← Back to Home</a>
+  <h1>Reservations</h1>
+
+  <div class="panel">
+    <h2>Create Reservation</h2>
+    <form id="reservationForm">
+      <div class="grid">
+        <div>
+          <label for="clientId">Client</label>
+          <select id="clientId" required>
+            <option value="">Select a client</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="hotelId">Hotel</label>
+          <select id="hotelId" required>
+            <option value="">Select a hotel</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="roomNumber">Room Number</label>
+          <select id="roomNumber" required>
+            <option value="">Select a room</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="status">Status</label>
+          <select id="status" required>
+            <option value="pending">pending</option>
+            <option value="confirmed">confirmed</option>
+            <option value="cancelled">cancelled</option>
+            <option value="completed">completed</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="checkInDate">Check-in Date</label>
+          <input type="date" id="checkInDate" required />
+        </div>
+
+        <div>
+          <label for="checkOutDate">Check-out Date</label>
+          <input type="date" id="checkOutDate" required />
+        </div>
+      </div>
+
+      <button type="submit">Create Reservation</button>
+    </form>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <h2>Existing Reservations</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Hotel</th>
+        <th>Area</th>
+        <th>Room</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="reservationTableBody"></tbody>
+  </table>
+
+  <script>
+    async function loadClients() {
+      const res = await fetch('/api/clients');
+      const clients = await res.json();
+      const clientSelect = document.getElementById('clientId');
+
+      clientSelect.innerHTML = '<option value="">Select a client</option>';
+
+      clients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.client_id;
+        option.textContent = `${client.client_id} - ${client.first_name} ${client.last_name}`;
+        clientSelect.appendChild(option);
+      });
+    }
+
+    async function loadHotels() {
+      const res = await fetch('/api/hotels');
+      const hotels = await res.json();
+      const hotelSelect = document.getElementById('hotelId');
+
+      hotelSelect.innerHTML = '<option value="">Select a hotel</option>';
+
+      hotels.forEach(hotel => {
+        const option = document.createElement('option');
+        option.value = hotel.hotel_id;
+        option.textContent = `${hotel.hotel_name} (${hotel.area})`;
+        hotelSelect.appendChild(option);
+      });
+    }
+
+    async function loadRoomsForHotel(hotelId) {
+      const roomSelect = document.getElementById('roomNumber');
+      roomSelect.innerHTML = '<option value="">Select a room</option>';
+
+      if (!hotelId) return;
+
+      const res = await fetch(`/api/rooms-by-hotel/${hotelId}`);
+      const rooms = await res.json();
+
+      rooms.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.room_number;
+        option.textContent = `${room.room_number} - Capacity ${room.capacity} - $${room.price}`;
+        roomSelect.appendChild(option);
+      });
+    }
+
+    async function loadReservations() {
+      const res = await fetch('/api/reservations');
+      const reservations = await res.json();
+      const tbody = document.getElementById('reservationTableBody');
+      tbody.innerHTML = '';
+
+      reservations.forEach(r => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${r.reservation_id}</td>
+          <td>${r.client_name}</td>
+          <td>${r.hotel_name}</td>
+          <td>${r.area}</td>
+          <td>${r.room_number}</td>
+          <td>${r.check_in_date}</td>
+          <td>${r.check_out_date}</td>
+          <td>
+            <select class="status-select" onchange="updateReservationStatus(${r.reservation_id}, this.value)">
+              <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>pending</option>
+              <option value="confirmed" ${r.status === 'confirmed' ? 'selected' : ''}>confirmed</option>
+              <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>cancelled</option>
+              <option value="completed" ${r.status === 'completed' ? 'selected' : ''}>completed</option>
+            </select>
+          </td>
+          <td>
+            <button class="action-btn" onclick="deleteReservation(${r.reservation_id})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function updateReservationStatus(reservationId, status) {
+      try {
+        const res = await fetch(`/api/reservations/${reservationId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to update reservation.');
+
+        document.getElementById('message').textContent = `Reservation ${reservationId} updated successfully.`;
+        await loadReservations();
+      } catch (error) {
+        document.getElementById('message').textContent = error.message;
+      }
+    }
+
+    async function deleteReservation(reservationId) {
+      if (!confirm(`Delete reservation ${reservationId}?`)) return;
+
+      try {
+        const res = await fetch(`/api/reservations/${reservationId}`, {
+          method: 'DELETE'
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to delete reservation.');
+
+        document.getElementById('message').textContent = `Reservation ${reservationId} deleted successfully.`;
+        await loadReservations();
+      } catch (error) {
+        document.getElementById('message').textContent = error.message;
+      }
+    }
+
+    document.getElementById('hotelId').addEventListener('change', async (e) => {
+      await loadRoomsForHotel(e.target.value);
+    });
+
+    document.getElementById('reservationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const messageDiv = document.getElementById('message');
+
+      const payload = {
+        clientId: document.getElementById('clientId').value,
+        hotelId: document.getElementById('hotelId').value,
+        roomNumber: document.getElementById('roomNumber').value,
+        checkInDate: document.getElementById('checkInDate').value,
+        checkOutDate: document.getElementById('checkOutDate').value,
+        status: document.getElementById('status').value
+      };
+
+      try {
+        const res = await fetch('/api/reservations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to create reservation.');
+        }
+
+        messageDiv.textContent = `Reservation ${data.reservation_id} created successfully.`;
+        document.getElementById('reservationForm').reset();
+        document.getElementById('roomNumber').innerHTML = '<option value="">Select a room</option>';
+        await loadReservations();
+      } catch (error) {
+        messageDiv.textContent = error.message;
+      }
+    });
+
+    async function initPage() {
+      await loadClients();
+      await loadHotels();
+      await loadReservations();
+    }
+
+    initPage();
+  </script>
+</body>
+</html>

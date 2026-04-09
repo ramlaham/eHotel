@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotels - e-Hotels</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
+    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #efefef; }
+  </style>
+</head>
+<body>
+  <a href="/">← Back to Home</a>
+  <h1>Hotels</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Hotel Name</th><th>Chain</th><th>Category</th><th>Area</th><th>Address</th><th>Room Count</th>
+      </tr>
+    </thead>
+    <tbody id="hotelTableBody"></tbody>
+  </table>
+
+  <script>
+    async function loadHotels() {
+      const res = await fetch('/api/hotels/full');
+      const hotels = await res.json();
+      const tbody = document.getElementById('hotelTableBody');
+      tbody.innerHTML = '';
+      hotels.forEach(h => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${h.hotel_id}</td>
+          <td>${h.hotel_name}</td>
+          <td>${h.chain_name}</td>
+          <td>${h.category}</td>
+          <td>${h.area}</td>
+          <td>${h.address}</td>
+          <td>${h.room_count}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    loadHotels();
+  </script>
+</body>
+</html>

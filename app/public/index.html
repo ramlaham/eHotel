@@ -4,17 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>e-Hotels</title>
+  <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
-  <h1>e-Hotels</h1>
-  <p>App skeleton is running.</p>
+  <h1 class="page-title">e-Hotels</h1>
+  <p class="page-subtitle">Hotel database application for CSI2532.</p>
 
-  <ul>
-    <li><a href="/search.html">Search Available Rooms</a></li>
-    <li><a href="/api/test-db" target="_blank">Test DB Connection</a></li>
-    <li><a href="/api/chains" target="_blank">View Chains</a></li>
-    <li><a href="/api/areas" target="_blank">View Areas</a></li>
-    <li><a href="/api/hotels" target="_blank">View Hotels</a></li>
-  </ul>
+  <div class="nav-links">
+    <a href="/search.html">Search Available Rooms</a>
+    <a href="/reservations.html">Manage Reservations</a>
+    <a href="/rentals.html">Manage Rentals</a>
+    <a href="/clients.html">Manage Clients</a>
+    <a href="/employees.html">Manage Employees</a>
+    <a href="/hotels.html">View Hotels</a>
+    <a href="/rooms.html">View Rooms</a>
+  </div>
+
+  <div class="panel">
+    <h2>Quick Links</h2>
+    <ul>
+      <li><a href="/api/test-db" target="_blank">Test DB Connection</a></li>
+      <li><a href="/api/chains" target="_blank">View Chains API</a></li>
+      <li><a href="/api/areas" target="_blank">View Areas API</a></li>
+      <li><a href="/api/hotels" target="_blank">View Hotels API</a></li>
+    </ul>
+  </div>
 </body>
 </html>
