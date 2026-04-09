@@ -1,23 +1,12 @@
--- =========================================================
--- e-Hotels Project - views.sql
--- CSI2532 Deliverable 2
--- PostgreSQL
--- =========================================================
+--- e-Hotels Project views
 
--- Optional cleanup for reruns
+-- Drop old views in case this file is run again
 DROP VIEW IF EXISTS available_rooms_per_area CASCADE;
 DROP VIEW IF EXISTS hotel_room_capacity CASCADE;
 
--- =========================================================
--- 1) Number of available rooms by area
---
--- A room is considered available if:
--- - it is not in a reservation with status 'pending' or 'confirmed'
--- - it is not in a rental with status 'active'
---
--- This view shows, for each hotel area/zone, how many rooms are
--- currently available.
--- =========================================================
+-- Counts how many rooms are currently available in each area
+-- A room is available if it is not in a pending/confirmed reservation
+-- and not in an active rental
 CREATE VIEW available_rooms_per_area AS
 SELECT
     h.area,
@@ -41,11 +30,7 @@ AND NOT EXISTS (
 )
 GROUP BY h.area;
 
--- =========================================================
--- 2) Total room capacity per hotel
---
--- Sums the capacity of all rooms belonging to each hotel.
--- =========================================================
+-- Adds up the total room capacity for each hotel
 CREATE VIEW hotel_room_capacity AS
 SELECT
     h.hotel_id,

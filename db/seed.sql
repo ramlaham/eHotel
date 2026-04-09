@@ -1,11 +1,7 @@
--- =========================================================
--- e-Hotels Project - seed.sql
--- CSI2532 Deliverable 2
--- PostgreSQL
--- =========================================================
+-- e-Hotels Project seed data
 
 /*
-Optional reset before reseeding
+Reset tables first if you want to reseed everything
 TRUNCATE TABLE
     archive_rental,
     archive_reservation,
@@ -25,9 +21,7 @@ TRUNCATE TABLE
 RESTART IDENTITY CASCADE;
 */
 
--- =========================================================
--- 1) HOTEL CHAINS
--- =========================================================
+-- Insert hotel chains
 INSERT INTO hotel_chain (chain_id, chain_name, central_office_address, number_of_hotels)
 VALUES
 (1, 'Northern Stay',   '100 Sparks St, Ottawa, ON',   8),
@@ -52,10 +46,8 @@ VALUES
 (4, '613-555-1004'),
 (5, '613-555-1005');
 
--- =========================================================
--- 2) HOTELS
--- 40 hotels total = 8 per chain
--- =========================================================
+-- Insert hotels
+-- 40 hotels total, 8 for each chain
 INSERT INTO hotel (hotel_id, chain_id, hotel_name, category, address, area, room_count)
 VALUES
 (1,  1, 'Parliament Grand Ottawa',      3, '101 Wellington St, Ottawa, ON',         'Nepean',    5),
@@ -111,9 +103,7 @@ INSERT INTO hotel_phone (hotel_id, phone_number)
 SELECT hotel_id, '613-600-' || LPAD(hotel_id::text, 4, '0')
 FROM hotel;
 
--- =========================================================
--- 3) CLIENTS
--- =========================================================
+-- Insert clients
 INSERT INTO client (client_id, first_name, last_name, address, ssn, registration_date)
 VALUES
 (1,  'John',    'Doe',       '145 Bank St, Ottawa, ON',       '381-524-907', DATE '2026-01-10'),
@@ -131,6 +121,8 @@ VALUES
 
 -- =========================================================
 -- 4) EMPLOYEES
+-- 3 employees per hotel = 120 employees
+-- employee 1 of each hotel will later become the manager
 -- =========================================================
 INSERT INTO employee (employee_id, hotel_id, first_name, last_name, address, ssn, role)
 SELECT
@@ -160,6 +152,7 @@ CROSS JOIN (VALUES (1), (2), (3)) AS e(n);
 
 -- =========================================================
 -- 5) HOTEL MANAGERS
+-- first employee of each hotel
 -- =========================================================
 INSERT INTO hotel_manager (hotel_id, manager_employee_id)
 SELECT hotel_id, ((hotel_id - 1) * 3) + 1
@@ -167,6 +160,8 @@ FROM hotel;
 
 -- =========================================================
 -- 6) ROOMS
+-- 5 rooms per hotel = 200 rooms
+-- room numbers: 101-105
 -- =========================================================
 INSERT INTO room (
     hotel_id,
@@ -213,9 +208,7 @@ SELECT
 FROM hotel h
 CROSS JOIN (VALUES (1), (2), (3), (4), (5)) AS r(n);
 
--- =========================================================
--- 7) ROOM AMENITIES
--- =========================================================
+-- Insert room amenities
 INSERT INTO room_amenity (hotel_id, room_number, amenity)
 SELECT hotel_id, room_number, 'WiFi' FROM room;
 
@@ -239,6 +232,7 @@ WHERE view_type = 'Sea';
 
 -- =========================================================
 -- 8) RESERVATIONS
+-- Keep them non-conflicting with trigger rules
 -- =========================================================
 INSERT INTO reservation (
     reservation_id,
@@ -262,6 +256,8 @@ VALUES
 
 -- =========================================================
 -- 9) RENTALS
+-- Includes direct rentals and one valid reservation->rental conversion
+-- Keep them non-conflicting with trigger rules
 -- =========================================================
 INSERT INTO rental (
     rental_id,

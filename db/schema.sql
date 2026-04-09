@@ -1,10 +1,6 @@
--- =========================================================
--- e-Hotels Project - schema.sql
--- CSI2532 Deliverable 2
--- PostgreSQL
--- =========================================================
+-- e-Hotels Project schema
 
--- Optional cleanup order for reruns
+-- Drop tables first so the file can be run again
 DROP TABLE IF EXISTS archive_rental CASCADE;
 DROP TABLE IF EXISTS archive_reservation CASCADE;
 DROP TABLE IF EXISTS rental CASCADE;
@@ -21,9 +17,7 @@ DROP TABLE IF EXISTS hotel_chain_phone CASCADE;
 DROP TABLE IF EXISTS hotel_chain_email CASCADE;
 DROP TABLE IF EXISTS hotel_chain CASCADE;
 
--- =========================================================
--- HOTEL CHAIN
--- =========================================================
+-- Hotel chains
 CREATE TABLE hotel_chain (
     chain_id                INTEGER PRIMARY KEY,
     chain_name              VARCHAR(100) NOT NULL,
@@ -49,12 +43,8 @@ CREATE TABLE hotel_chain_phone (
         ON DELETE CASCADE
 );
 
--- =========================================================
--- HOTEL
--- area is added to support:
--- - ">= 2 hôtels dans une même zone"
--- - view: number of available rooms by zone
--- =========================================================
+-- Hotels
+-- Area is included for the area-based requirement and view
 CREATE TABLE hotel (
     hotel_id         INTEGER PRIMARY KEY,
     chain_id         INTEGER NOT NULL,
@@ -86,9 +76,7 @@ CREATE TABLE hotel_phone (
         ON DELETE CASCADE
 );
 
--- =========================================================
--- CLIENT
--- =========================================================
+-- Clients
 CREATE TABLE client (
     client_id            INTEGER PRIMARY KEY,
     first_name           VARCHAR(50) NOT NULL,
@@ -98,9 +86,7 @@ CREATE TABLE client (
     registration_date    DATE NOT NULL
 );
 
--- =========================================================
--- EMPLOYEE
--- =========================================================
+-- Employees
 CREATE TABLE employee (
     employee_id      INTEGER PRIMARY KEY,
     hotel_id         INTEGER NOT NULL,
@@ -114,12 +100,9 @@ CREATE TABLE employee (
         ON DELETE CASCADE
 );
 
--- =========================================================
--- HOTEL MANAGER
--- one manager row per hotel
--- manager_employee_id is unique so one employee manages at most one hotel
--- trigger later should verify the manager belongs to the same hotel
--- =========================================================
+-- Hotel managers
+-- One manager row per hotel
+-- The trigger later checks that the employee belongs to that hotel
 CREATE TABLE hotel_manager (
     hotel_id               INTEGER PRIMARY KEY,
     manager_employee_id    INTEGER NOT NULL UNIQUE,
@@ -130,11 +113,9 @@ CREATE TABLE hotel_manager (
         REFERENCES employee(employee_id)
 );
 
--- =========================================================
--- ROOM
--- composite PK kept exactly in spirit of Deliverable 1
--- surface_area added to support search by "superficie"
--- =========================================================
+-- Rooms
+-- Uses the same composite primary key idea as Deliverable 1
+-- Surface area is included for room search filters
 CREATE TABLE room (
     hotel_id               INTEGER NOT NULL,
     room_number            VARCHAR(10) NOT NULL,
@@ -160,9 +141,7 @@ CREATE TABLE room_amenity (
         ON DELETE CASCADE
 );
 
--- =========================================================
--- RESERVATION
--- =========================================================
+-- Reservations
 CREATE TABLE reservation (
     reservation_id      INTEGER PRIMARY KEY,
     client_id           INTEGER NOT NULL,
@@ -180,11 +159,9 @@ CREATE TABLE reservation (
     CHECK (status IN ('pending', 'confirmed', 'cancelled', 'completed'))
 );
 
--- =========================================================
--- RENTAL
--- reservation_id is nullable for direct rentals
--- UNIQUE(reservation_id) enforces: one reservation -> at most one rental
--- =========================================================
+-- Rentals
+-- reservation_id can be null for direct rentals
+-- UNIQUE(reservation_id) means one reservation can become only one rental
 CREATE TABLE rental (
     rental_id                    INTEGER PRIMARY KEY,
     client_id                    INTEGER NOT NULL,
@@ -207,11 +184,8 @@ CREATE TABLE rental (
     CHECK (status IN ('active', 'completed', 'cancelled'))
 );
 
--- =========================================================
--- ARCHIVE TABLES
--- kept close to Deliverable 1
--- no FK back to active tables so archive survives deletions
--- =========================================================
+-- Archive tables
+-- These keep old data even after rows are deleted from active tables
 CREATE TABLE archive_reservation (
     archive_reservation_id   INTEGER PRIMARY KEY,
     original_check_in_date   DATE NOT NULL,

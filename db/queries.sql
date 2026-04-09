@@ -1,14 +1,7 @@
--- =========================================================
--- e-Hotels Project - queries.sql
--- CSI2532 Deliverable 2
--- PostgreSQL
--- =========================================================
+-- e-Hotels Project queries
 
--- ---------------------------------------------------------
--- QUERY 1
--- Search available rooms with combined filters
--- Example use for the application search page
--- ---------------------------------------------------------
+-- Query 1
+-- Searches for available rooms using multiple filters
 SELECT
     h.hotel_id,
     h.hotel_name,
@@ -52,11 +45,8 @@ WHERE h.area = 'Centretown'
   )
 ORDER BY h.hotel_name, r.price;
 
--- ---------------------------------------------------------
--- QUERY 2
--- Show all reservations with client and hotel information
--- Useful for admin/management pages
--- ---------------------------------------------------------
+-- Query 2
+-- Shows all reservations with the client and hotel details
 SELECT
     res.reservation_id,
     c.first_name || ' ' || c.last_name AS client_name,
@@ -73,11 +63,8 @@ JOIN hotel h
     ON res.hotel_id = h.hotel_id
 ORDER BY res.check_in_date, res.reservation_id;
 
--- ---------------------------------------------------------
--- QUERY 3
--- Show all rentals with client and employee information
--- Useful for admin/management pages
--- ---------------------------------------------------------
+-- Query 3
+-- Shows all rentals with client and employee info
 SELECT
     rt.rental_id,
     c.first_name || ' ' || c.last_name AS client_name,
@@ -96,11 +83,8 @@ LEFT JOIN employee e
     ON rt.processed_by_employee_id = e.employee_id
 ORDER BY rt.rental_start_date, rt.rental_id;
 
--- ---------------------------------------------------------
--- QUERY 4
--- Count available rooms by hotel
--- Useful for showing hotel availability summaries
--- ---------------------------------------------------------
+-- Query 4
+-- Counts how many rooms are currently available in each hotel
 SELECT
     h.hotel_id,
     h.hotel_name,

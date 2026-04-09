@@ -1,10 +1,6 @@
--- =========================================================
--- e-Hotels Project - triggers.sql
--- CSI2532 Deliverable 2
--- PostgreSQL
--- =========================================================
+-- e-Hotels Project triggers
 
--- Optional cleanup for reruns
+-- Drop old triggers and functions so the file can be run again
 DROP TRIGGER IF EXISTS trg_check_hotel_manager_same_hotel ON hotel_manager;
 DROP FUNCTION IF EXISTS check_hotel_manager_same_hotel();
 
@@ -23,9 +19,7 @@ DROP FUNCTION IF EXISTS archive_reservation_before_delete();
 DROP TRIGGER IF EXISTS trg_archive_rental_before_delete ON rental;
 DROP FUNCTION IF EXISTS archive_rental_before_delete();
 
--- =========================================================
--- 1) Ensure hotel manager belongs to the same hotel
--- =========================================================
+-- Makes sure the assigned hotel manager works at that same hotel
 CREATE OR REPLACE FUNCTION check_hotel_manager_same_hotel()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -55,13 +49,8 @@ BEFORE INSERT OR UPDATE ON hotel_manager
 FOR EACH ROW
 EXECUTE FUNCTION check_hotel_manager_same_hotel();
 
--- =========================================================
--- 2) Prevent overlapping active reservations for the same room
--- Overlap rule:
--- [start1, end1) overlaps [start2, end2) if
--- start1 < end2 AND end1 > start2
--- Ignore cancelled/completed reservations
--- =========================================================
+-- Stops two active reservations from overlapping for the same room
+-- Only checks reservations with pending or confirmed status
 CREATE OR REPLACE FUNCTION prevent_overlapping_reservations()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -91,10 +80,7 @@ BEFORE INSERT OR UPDATE ON reservation
 FOR EACH ROW
 EXECUTE FUNCTION prevent_overlapping_reservations();
 
--- =========================================================
--- 3) Prevent overlapping active rentals for the same room
--- Ignore cancelled/completed rentals
--- =========================================================
+-- Stops two active rentals from overlapping for the same room
 CREATE OR REPLACE FUNCTION prevent_overlapping_rentals()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -124,17 +110,8 @@ BEFORE INSERT OR UPDATE ON rental
 FOR EACH ROW
 EXECUTE FUNCTION prevent_overlapping_rentals();
 
--- =========================================================
--- 4) Validate reservation -> rental conversion
--- If rental.reservation_id is not null:
---   - reservation must exist
---   - same client
---   - same room
---   - same hotel
---   - rental dates must match reservation dates
--- Also prevents active rental from conflicting with another active
--- reservation for same room, except the one being converted.
--- =========================================================
+-- Checks that a rental made from a reservation actually matches it
+-- Also makes sure the rental does not conflict with another reservation
 CREATE OR REPLACE FUNCTION validate_rental_conversion()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -173,8 +150,7 @@ BEGIN
         END IF;
     END IF;
 
-    -- Prevent an active rental from conflicting with another active reservation
-    -- for the same room, except the reservation being converted.
+    -- Prevents conflicts with another reservation for the same room
     IF NEW.status = 'active' THEN
         IF EXISTS (
             SELECT 1
@@ -201,10 +177,7 @@ BEFORE INSERT OR UPDATE ON rental
 FOR EACH ROW
 EXECUTE FUNCTION validate_rental_conversion();
 
--- =========================================================
--- 5) Archive reservation before delete
--- Keeps historical reservation data even if active rows are removed
--- =========================================================
+-- Saves reservation info before a reservation is deleted
 CREATE OR REPLACE FUNCTION archive_reservation_before_delete()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -247,12 +220,8 @@ BEFORE DELETE ON reservation
 FOR EACH ROW
 EXECUTE FUNCTION archive_reservation_before_delete();
 
--- =========================================================
--- 6) Archive rental before delete
--- Since archive_rental stores damages before/after, we copy the room's
--- current condition_state into damages_before_check_in and leave after
--- as NULL for now unless you later expand the schema/UI.
--- =========================================================
+-- Saves rental info before a rental is deleted
+-- Uses the room's current condition as the before-check-in damage value
 CREATE OR REPLACE FUNCTION archive_rental_before_delete()
 RETURNS TRIGGER AS $$
 DECLARE
