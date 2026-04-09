@@ -9,6 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+function isValidSSN(ssn) {
+  return /^[0-9]{3}-[0-9]{3}-[0-9]{3}$/.test(ssn);
+}
+
 app.post('/api/search-rooms', async (req, res) => {
   try {
     const {
@@ -414,6 +418,10 @@ app.post('/api/clients', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
+    if (!isValidSSN(ssn)) {
+      return res.status(400).json({ error: 'SSN must be in the format 999-999-999.' });
+    }
+
     const idResult = await pool.query(`
       SELECT COALESCE(MAX(client_id), 0) + 1 AS next_id
       FROM client
@@ -454,6 +462,10 @@ app.post('/api/employees', async (req, res) => {
 
     if (!hotelId || !firstName || !lastName || !address || !ssn || !role) {
       return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    if (!isValidSSN(ssn)) {
+      return res.status(400).json({ error: 'SSN must be in the format 999-999-999.' });
     }
 
     const idResult = await pool.query(`

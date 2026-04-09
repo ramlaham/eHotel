@@ -1,286 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rentals - e-Hotels</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 30px;
-      background: #f7f7f7;
-    }
-    h1, h2 {
-      margin-bottom: 15px;
-    }
-    form, .panel {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 1000px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(220px, 1fr));
-      gap: 15px;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 15px;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-      vertical-align: middle;
-    }
-    th {
-      background: #efefef;
-    }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    .message {
-      margin: 15px 0;
-      font-weight: bold;
-    }
-    .action-btn {
-      width: auto;
-      padding: 8px 12px;
-      margin-top: 0;
-    }
-    .status-select {
-      width: 100%;
-      min-width: 120px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rentals - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
 </head>
+
 <body>
-  <a class="back-link" href="/">← Back to Home</a>
-  <h1>Rentals</h1>
-
-  <div class="panel">
-    <h2>Create Direct Rental</h2>
-    <form id="directRentalForm">
-      <div class="grid">
-        <div>
-          <label for="directClientId">Client</label>
-          <select id="directClientId" required>
-            <option value="">Select a client</option>
-          </select>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/rentals</div>
+            <div class="browser-btn">✕</div>
         </div>
 
-        <div>
-          <label for="directHotelId">Hotel</label>
-          <select id="directHotelId" required>
-            <option value="">Select a hotel</option>
-          </select>
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
+
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
+
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab" href="/search.html">LISTINGS</a>
+                <a class="top-tab" href="/reservations.html">RESERVATIONS</a>
+                <a class="top-tab active" href="/rentals.html">RENTALS</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>DIRECT RENTAL</span>
+                <span>CONVERT RESERVATION</span>
+                <span>MANAGE STATUS</span>
+            </div>
         </div>
 
-        <div>
-          <label for="directRoomNumber">Room Number</label>
-          <select id="directRoomNumber" required>
-            <option value="">Select a room</option>
-          </select>
-        </div>
+        <main class="content">
+            <div class="form-card">
+                <h2>Create Direct Rental</h2>
+                <form id="directRentalForm">
+                    <div class="form-grid">
+                        <div>
+                            <label for="directClientId">Client</label>
+                            <select id="directClientId" required>
+                                <option value="">Select a client</option>
+                            </select>
+                        </div>
 
-        <div>
-          <label for="directEmployeeId">Processed By Employee</label>
-          <select id="directEmployeeId" required>
-            <option value="">Select an employee</option>
-          </select>
-        </div>
+                        <div>
+                            <label for="directHotelId">Hotel</label>
+                            <select id="directHotelId" required>
+                                <option value="">Select a hotel</option>
+                            </select>
+                        </div>
 
-        <div>
-          <label for="directStatus">Status</label>
-          <select id="directStatus" required>
-            <option value="active">active</option>
-            <option value="completed">completed</option>
-            <option value="cancelled">cancelled</option>
-          </select>
-        </div>
+                        <div>
+                            <label for="directRoomNumber">Room Number</label>
+                            <select id="directRoomNumber" required>
+                                <option value="">Select a room</option>
+                            </select>
+                        </div>
 
-        <div>
-          <label for="directStartDate">Start Date</label>
-          <input type="date" id="directStartDate" required />
-        </div>
+                        <div>
+                            <label for="directEmployeeId">Processed By Employee</label>
+                            <select id="directEmployeeId" required>
+                                <option value="">Select an employee</option>
+                            </select>
+                        </div>
 
-        <div>
-          <label for="directEndDate">End Date</label>
-          <input type="date" id="directEndDate" required />
-        </div>
-      </div>
+                        <div>
+                            <label for="directStatus">Status</label>
+                            <select id="directStatus" required>
+                                <option value="active">active</option>
+                                <option value="completed">completed</option>
+                                <option value="cancelled">cancelled</option>
+                            </select>
+                        </div>
 
-      <button type="submit">Create Direct Rental</button>
-    </form>
-    <div id="directRentalMessage" class="message"></div>
-  </div>
+                        <div>
+                            <label for="directStartDate">Start Date</label>
+                            <input type="date" id="directStartDate" required />
+                        </div>
 
-  <div class="panel">
-    <h2>Convert Reservation to Rental</h2>
-    <form id="convertForm">
-      <div class="grid">
-        <div>
-          <label for="reservationId">Reservation</label>
-          <select id="reservationId" required>
-            <option value="">Select a reservation</option>
-          </select>
-        </div>
+                        <div>
+                            <label for="directEndDate">End Date</label>
+                            <input type="date" id="directEndDate" required />
+                        </div>
+                    </div>
+                    <br/>
 
-        <div>
-          <label for="convertEmployeeId">Processed By Employee</label>
-          <select id="convertEmployeeId" required>
-            <option value="">Select an employee</option>
-          </select>
-        </div>
+                    <button type="submit" class="green-btn">RENT ROOM</button>
+                </form>
+                <div id="directRentalMessage" class="message"></div>
+            </div>
 
-        <div>
-          <label for="convertStatus">Rental Status</label>
-          <select id="convertStatus" required>
-            <option value="active">active</option>
-            <option value="completed">completed</option>
-            <option value="cancelled">cancelled</option>
-          </select>
-        </div>
-      </div>
+            <div class="form-card">
+                <h2>Convert Reservation to Rental</h2>
+                <form id="convertForm">
+                    <div class="form-grid">
+                        <div>
+                            <label for="reservationId">Reservation</label>
+                            <select id="reservationId" required>
+                                <option value="">Select a reservation</option>
+                            </select>
+                        </div>
 
-      <button type="submit">Convert Reservation</button>
-    </form>
-    <div id="convertMessage" class="message"></div>
-  </div>
+                        <div>
+                            <label for="convertEmployeeId">Processed By Employee</label>
+                            <select id="convertEmployeeId" required>
+                                <option value="">Select an employee</option>
+                            </select>
+                        </div>
 
-  <h2>Existing Rentals</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Client</th>
-        <th>Hotel</th>
-        <th>Room</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Status</th>
-        <th>Processed By</th>
-        <th>Reservation ID</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="rentalTableBody"></tbody>
-  </table>
+                        <div>
+                            <label for="convertStatus">Rental Status</label>
+                            <select id="convertStatus" required>
+                                <option value="active">active</option>
+                                <option value="completed">completed</option>
+                                <option value="cancelled">cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
 
-  <script>
-    async function loadClients() {
-      const res = await fetch('/api/clients');
-      const clients = await res.json();
+                    <button type="submit" class="green-btn">CONVERT RESERVATION</button>
+                </form>
+                <div id="convertMessage" class="message"></div>
+            </div>
 
-      const selects = [document.getElementById('directClientId')];
-      selects.forEach(select => {
-        select.innerHTML = '<option value="">Select a client</option>';
-        clients.forEach(client => {
-          const option = document.createElement('option');
-          option.value = client.client_id;
-          option.textContent = `${client.client_id} - ${client.first_name} ${client.last_name}`;
-          select.appendChild(option);
-        });
-      });
-    }
+            <div class="detail-panel">
+                <div class="detail-summary">
+                    <div class="list-card-image"></div>
+                    <div class="list-card-body">
+                        <div class="list-title">Rental Desk</div>
+                        <div class="list-meta">Direct stays and conversions</div>
+                        <button class="green-btn" onclick="window.location.href='/search.html'">VIEW LISTINGS</button>
+                    </div>
+                </div>
 
-    async function loadHotels() {
-      const res = await fetch('/api/hotels');
-      const hotels = await res.json();
+                <div class="detail-body">
+                    <div class="detail-title">Manage Rentals</div>
+                    <div class="detail-description">
+                        Handle direct room rentals and convert existing reservations into rentals.
+                        This page lets you assign clients, employees, dates, and statuses while
+                        using the database rules already built into e-Hotels.
+                    </div>
+                    <div class="detail-footer">
+                        <div class="detail-price">RENT</div>
+                        <button class="green-btn"
+                            onclick="document.getElementById('directRentalForm').scrollIntoView({ behavior: 'smooth' })">
+                            CREATE RENTAL
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-      const hotelSelect = document.getElementById('directHotelId');
-      hotelSelect.innerHTML = '<option value="">Select a hotel</option>';
+            <div style="margin-top: 24px;">
+                <h2>Existing Rentals</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Client</th>
+                            <th>Hotel</th>
+                            <th>Room</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                            <th>Processed By</th>
+                            <th>Reservation ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rentalTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 
-      hotels.forEach(hotel => {
-        const option = document.createElement('option');
-        option.value = hotel.hotel_id;
-        option.textContent = `${hotel.hotel_name} (${hotel.area})`;
-        hotelSelect.appendChild(option);
-      });
-    }
+    <script>
+        async function loadClients() {
+            const res = await fetch('/api/clients');
+            const clients = await res.json();
 
-    async function loadRoomsForHotel(hotelId) {
-      const roomSelect = document.getElementById('directRoomNumber');
-      roomSelect.innerHTML = '<option value="">Select a room</option>';
+            const selects = [document.getElementById('directClientId')];
+            selects.forEach(select => {
+                select.innerHTML = '<option value="">Select a client</option>';
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.client_id;
+                    option.textContent = `${client.client_id} - ${client.first_name} ${client.last_name}`;
+                    select.appendChild(option);
+                });
+            });
+        }
 
-      if (!hotelId) return;
+        async function loadHotels() {
+            const res = await fetch('/api/hotels');
+            const hotels = await res.json();
 
-      const res = await fetch(`/api/rooms-by-hotel/${hotelId}`);
-      const rooms = await res.json();
+            const hotelSelect = document.getElementById('directHotelId');
+            hotelSelect.innerHTML = '<option value="">Select a hotel</option>';
 
-      rooms.forEach(room => {
-        const option = document.createElement('option');
-        option.value = room.room_number;
-        option.textContent = `${room.room_number} - Capacity ${room.capacity} - $${room.price}`;
-        roomSelect.appendChild(option);
-      });
-    }
+            hotels.forEach(hotel => {
+                const option = document.createElement('option');
+                option.value = hotel.hotel_id;
+                option.textContent = `${hotel.hotel_name} (${hotel.area})`;
+                hotelSelect.appendChild(option);
+            });
+        }
 
-    async function loadEmployees() {
-      const res = await fetch('/api/employees');
-      const employees = await res.json();
+        async function loadRoomsForHotel(hotelId) {
+            const roomSelect = document.getElementById('directRoomNumber');
+            roomSelect.innerHTML = '<option value="">Select a room</option>';
 
-      const selects = [
-        document.getElementById('directEmployeeId'),
-        document.getElementById('convertEmployeeId')
-      ];
+            if (!hotelId) return;
 
-      selects.forEach(select => {
-        select.innerHTML = '<option value="">Select an employee</option>';
-        employees.forEach(emp => {
-          const option = document.createElement('option');
-          option.value = emp.employee_id;
-          option.textContent = `${emp.employee_id} - ${emp.first_name} ${emp.last_name} (${emp.hotel_name})`;
-          select.appendChild(option);
-        });
-      });
-    }
+            const res = await fetch(`/api/rooms-by-hotel/${hotelId}`);
+            const rooms = await res.json();
 
-    async function loadConvertibleReservations() {
-      const res = await fetch('/api/convertible-reservations');
-      const reservations = await res.json();
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room.room_number;
+                option.textContent = `${room.room_number} - Capacity ${room.capacity} - $${room.price}`;
+                roomSelect.appendChild(option);
+            });
+        }
 
-      const select = document.getElementById('reservationId');
-      select.innerHTML = '<option value="">Select a reservation</option>';
+        async function loadEmployees() {
+            const res = await fetch('/api/employees');
+            const employees = await res.json();
 
-      reservations.forEach(r => {
-        const option = document.createElement('option');
-        option.value = r.reservation_id;
-        option.textContent = `#${r.reservation_id} - ${r.client_name} - ${r.hotel_name} Room ${r.room_number}`;
-        select.appendChild(option);
-      });
-    }
+            const selects = [
+                document.getElementById('directEmployeeId'),
+                document.getElementById('convertEmployeeId')
+            ];
 
-    async function loadRentals() {
-      const res = await fetch('/api/rentals');
-      const rentals = await res.json();
-      const tbody = document.getElementById('rentalTableBody');
-      tbody.innerHTML = '';
+            selects.forEach(select => {
+                select.innerHTML = '<option value="">Select an employee</option>';
+                employees.forEach(emp => {
+                    const option = document.createElement('option');
+                    option.value = emp.employee_id;
+                    option.textContent = `${emp.employee_id} - ${emp.first_name} ${emp.last_name} (${emp.hotel_name})`;
+                    select.appendChild(option);
+                });
+            });
+        }
 
-      rentals.forEach(r => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        async function loadConvertibleReservations() {
+            const res = await fetch('/api/convertible-reservations');
+            const reservations = await res.json();
+
+            const select = document.getElementById('reservationId');
+            select.innerHTML = '<option value="">Select a reservation</option>';
+
+            reservations.forEach(r => {
+                const option = document.createElement('option');
+                option.value = r.reservation_id;
+                option.textContent = `#${r.reservation_id} - ${r.client_name} - ${r.hotel_name} Room ${r.room_number}`;
+                select.appendChild(option);
+            });
+        }
+
+        async function loadRentals() {
+            const res = await fetch('/api/rentals');
+            const rentals = await res.json();
+            const tbody = document.getElementById('rentalTableBody');
+            tbody.innerHTML = '';
+
+            rentals.forEach(r => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td>${r.rental_id}</td>
           <td>${r.client_name}</td>
           <td>${r.hotel_name}</td>
@@ -297,128 +296,155 @@
           <td>${r.processed_by || ''}</td>
           <td>${r.reservation_id || ''}</td>
           <td>
-            <button class="action-btn" onclick="deleteRental(${r.rental_id})">Delete</button>
+            <button class="action-btn green-btn" onclick="deleteRental(${r.rental_id})">DELETE</button>
           </td>
         `;
-        tbody.appendChild(row);
-      });
-    }
+                tbody.appendChild(row);
+            });
+        }
 
-    async function updateRentalStatus(rentalId, status) {
-      try {
-        const res = await fetch(`/api/rentals/${rentalId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status })
+        async function updateRentalStatus(rentalId, status) {
+            try {
+                const res = await fetch(`/api/rentals/${rentalId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to update rental.');
+
+                document.getElementById('directRentalMessage').textContent = `Rental ${rentalId} updated successfully.`;
+                await loadRentals();
+            } catch (error) {
+                document.getElementById('directRentalMessage').textContent = error.message;
+            }
+        }
+
+        async function deleteRental(rentalId) {
+            if (!confirm(`Delete rental ${rentalId}?`)) return;
+
+            try {
+                const res = await fetch(`/api/rentals/${rentalId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to delete rental.');
+
+                document.getElementById('directRentalMessage').textContent = `Rental ${rentalId} deleted successfully.`;
+                await loadRentals();
+                await loadConvertibleReservations();
+            } catch (error) {
+                document.getElementById('directRentalMessage').textContent = error.message;
+            }
+        }
+
+        document.getElementById('directHotelId').addEventListener('change', async (e) => {
+            await loadRoomsForHotel(e.target.value);
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to update rental.');
+        document.getElementById('directRentalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        document.getElementById('directRentalMessage').textContent = `Rental ${rentalId} updated successfully.`;
-        await loadRentals();
-      } catch (error) {
-        document.getElementById('directRentalMessage').textContent = error.message;
-      }
-    }
+            const messageDiv = document.getElementById('directRentalMessage');
 
-    async function deleteRental(rentalId) {
-      if (!confirm(`Delete rental ${rentalId}?`)) return;
+            const payload = {
+                clientId: document.getElementById('directClientId').value,
+                hotelId: document.getElementById('directHotelId').value,
+                roomNumber: document.getElementById('directRoomNumber').value,
+                employeeId: document.getElementById('directEmployeeId').value,
+                startDate: document.getElementById('directStartDate').value,
+                endDate: document.getElementById('directEndDate').value,
+                status: document.getElementById('directStatus').value
+            };
 
-      try {
-        const res = await fetch(`/api/rentals/${rentalId}`, {
-          method: 'DELETE'
+            try {
+                const res = await fetch('/api/rentals/direct', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to create rental.');
+
+                messageDiv.textContent = `Direct rental ${data.rental_id} created successfully.`;
+                document.getElementById('directRentalForm').reset();
+                document.getElementById('directRoomNumber').innerHTML = '<option value="">Select a room</option>';
+                await loadRentals();
+                await loadConvertibleReservations();
+            } catch (error) {
+                messageDiv.textContent = error.message;
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to delete rental.');
+        document.getElementById('convertForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        document.getElementById('directRentalMessage').textContent = `Rental ${rentalId} deleted successfully.`;
-        await loadRentals();
-        await loadConvertibleReservations();
-      } catch (error) {
-        document.getElementById('directRentalMessage').textContent = error.message;
-      }
-    }
+            const messageDiv = document.getElementById('convertMessage');
 
-    document.getElementById('directHotelId').addEventListener('change', async (e) => {
-      await loadRoomsForHotel(e.target.value);
-    });
+            const payload = {
+                reservationId: document.getElementById('reservationId').value,
+                employeeId: document.getElementById('convertEmployeeId').value,
+                status: document.getElementById('convertStatus').value
+            };
 
-    document.getElementById('directRentalForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+            try {
+                const res = await fetch('/api/rentals/convert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-      const messageDiv = document.getElementById('directRentalMessage');
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to convert reservation.');
 
-      const payload = {
-        clientId: document.getElementById('directClientId').value,
-        hotelId: document.getElementById('directHotelId').value,
-        roomNumber: document.getElementById('directRoomNumber').value,
-        employeeId: document.getElementById('directEmployeeId').value,
-        startDate: document.getElementById('directStartDate').value,
-        endDate: document.getElementById('directEndDate').value,
-        status: document.getElementById('directStatus').value
-      };
-
-      try {
-        const res = await fetch('/api/rentals/direct', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+                messageDiv.textContent = `Reservation ${payload.reservationId} converted to rental ${data.rental_id}.`;
+                document.getElementById('convertForm').reset();
+                await loadRentals();
+                await loadConvertibleReservations();
+            } catch (error) {
+                messageDiv.textContent = error.message;
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to create rental.');
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                hotelId: params.get('hotelId'),
+                roomNumber: params.get('roomNumber')
+            };
+        }
 
-        messageDiv.textContent = `Direct rental ${data.rental_id} created successfully.`;
-        document.getElementById('directRentalForm').reset();
-        document.getElementById('directRoomNumber').innerHTML = '<option value="">Select a room</option>';
-        await loadRentals();
-        await loadConvertibleReservations();
-      } catch (error) {
-        messageDiv.textContent = error.message;
-      }
-    });
+        function getTodayDateString() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
 
-    document.getElementById('convertForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+        async function initPage() {
+            await loadClients();
+            await loadHotels();
+            await loadEmployees();
+            await loadConvertibleReservations();
+            await loadRentals();
 
-      const messageDiv = document.getElementById('convertMessage');
+            const { hotelId, roomNumber } = getQueryParams();
 
-      const payload = {
-        reservationId: document.getElementById('reservationId').value,
-        employeeId: document.getElementById('convertEmployeeId').value,
-        status: document.getElementById('convertStatus').value
-      };
+            document.getElementById('directStartDate').value = getTodayDateString();
 
-      try {
-        const res = await fetch('/api/rentals/convert', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+            if (hotelId) {
+                document.getElementById('directHotelId').value = hotelId;
+                await loadRoomsForHotel(hotelId);
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to convert reservation.');
+                if (roomNumber) {
+                    document.getElementById('directRoomNumber').value = roomNumber;
+                }
+            }
+        }
 
-        messageDiv.textContent = `Reservation ${payload.reservationId} converted to rental ${data.rental_id}.`;
-        document.getElementById('convertForm').reset();
-        await loadRentals();
-        await loadConvertibleReservations();
-      } catch (error) {
-        messageDiv.textContent = error.message;
-      }
-    });
-
-    async function initPage() {
-      await loadClients();
-      await loadHotels();
-      await loadEmployees();
-      await loadConvertibleReservations();
-      await loadRentals();
-    }
-
-    initPage();
-  </script>
+        initPage();
+    </script>
 </body>
+
 </html>

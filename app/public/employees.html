@@ -1,74 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Employees - e-Hotels</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
-    form, .panel { background: white; padding: 20px; border-radius: 10px; max-width: 1000px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 25px; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; }
-    input, select, button { width: 100%; padding: 10px; font-size: 14px; box-sizing: border-box; }
-    button { margin-top: 15px; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #efefef; }
-    .message { margin: 15px 0; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employees - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
 </head>
+
 <body>
-  <a href="/">← Back to Home</a>
-  <h1>Employees</h1>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/employees</div>
+            <div class="browser-btn">✕</div>
+        </div>
 
-  <div class="panel">
-    <h2>Add Employee</h2>
-    <form id="employeeForm">
-      <div class="grid">
-        <div><label>Hotel</label><select id="hotelId" required><option value="">Select a hotel</option></select></div>
-        <div><label>First Name</label><input id="firstName" required /></div>
-        <div><label>Last Name</label><input id="lastName" required /></div>
-        <div><label>Address</label><input id="address" required /></div>
-        <div><label>SSN</label><input id="ssn" required /></div>
-        <div><label>Role</label><input id="role" required /></div>
-      </div>
-      <button type="submit">Add Employee</button>
-    </form>
-    <div id="message" class="message"></div>
-  </div>
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
 
-  <h2>Employee List</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th><th>Hotel</th><th>First Name</th><th>Last Name</th><th>Address</th><th>SSN</th><th>Role</th>
-      </tr>
-    </thead>
-    <tbody id="employeeTableBody"></tbody>
-  </table>
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
 
-  <script>
-    async function loadHotels() {
-      const res = await fetch('/api/hotels');
-      const hotels = await res.json();
-      const select = document.getElementById('hotelId');
-      select.innerHTML = '<option value="">Select a hotel</option>';
-      hotels.forEach(h => {
-        const option = document.createElement('option');
-        option.value = h.hotel_id;
-        option.textContent = h.hotel_name;
-        select.appendChild(option);
-      });
-    }
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab" href="/search.html">LISTINGS</a>
+                <a class="top-tab " href="/hotels.html">HOTELS</a>
+                <a class="top-tab" href="/rooms.html">ROOMS</a>
+                <a class="top-tab" href="/clients.html">CLIENTS</a>
+                <a class="top-tab active" href="/employees.html">EMPLOYEES</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>ADD EMPLOYEES</span>
+                <span>VIEW EMPLOYEES</span>
+                <span>HOTEL STAFF</span>
+            </div>
+        </div>
 
-    async function loadEmployees() {
-      const res = await fetch('/api/employees/full');
-      const employees = await res.json();
-      const tbody = document.getElementById('employeeTableBody');
-      tbody.innerHTML = '';
-      employees.forEach(e => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        <main class="content">
+            <div class="form-card">
+                <h2>Add Employee</h2>
+                <form id="employeeForm">
+                    <div class="form-grid">
+                        <div><label>Hotel</label><select id="hotelId" required>
+                                <option value="">Select a hotel</option>
+                            </select></div>
+                        <div><label>First Name</label><input id="firstName" required /></div>
+                        <div><label>Last Name</label><input id="lastName" required /></div>
+                        <div><label>Address</label><input id="address" required /></div>
+                        <div><label>SSN</label><input id="ssn" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" placeholder="123-456-789" /></div>
+                        <div><label>Role</label><input id="role" required /></div>
+                    </div>
+                    <br/>
+                    <button type="submit" class="green-btn">ADD EMPLOYEE</button>
+                </form>
+                <div id="message" class="message"></div>
+            </div>
+
+            <div class="detail-panel">
+                <div class="detail-summary">
+                    <div class="list-card-image"></div>
+                    <div class="list-card-body">
+                        <div class="list-title">Employee Records</div>
+                        <div class="list-meta">Staff and managers</div>
+                        <button class="green-btn" onclick="window.location.href='/hotels.html'">VIEW HOTELS</button>
+                    </div>
+                </div>
+
+                <div class="detail-body">
+                    <div class="detail-title">Manage Employees</div>
+                    <div class="detail-description">
+                        Add and review hotel employees responsible for reservations, rentals, and daily operations.
+                    </div>
+                    <div class="detail-footer">
+                        <div class="detail-price">STAFF</div>
+                        <button class="green-btn"
+                            onclick="document.getElementById('employeeForm').scrollIntoView({ behavior: 'smooth' })">
+                            CREATE EMPLOYEE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h2>Employee List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hotel</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Address</th>
+                            <th>SSN</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+
+        async function loadHotels() {
+            const res = await fetch('/api/hotels');
+            const hotels = await res.json();
+            const select = document.getElementById('hotelId');
+            select.innerHTML = '<option value="">Select a hotel</option>';
+            hotels.forEach(h => {
+                const option = document.createElement('option');
+                option.value = h.hotel_id;
+                option.textContent = h.hotel_name;
+                select.appendChild(option);
+            });
+        }
+
+        async function loadEmployees() {
+            const res = await fetch('/api/employees/full');
+            const employees = await res.json();
+            const tbody = document.getElementById('employeeTableBody');
+            tbody.innerHTML = '';
+            employees.forEach(e => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td>${e.employee_id}</td>
           <td>${e.hotel_name}</td>
           <td>${e.first_name}</td>
@@ -77,47 +142,48 @@
           <td>${e.ssn}</td>
           <td>${e.role}</td>
         `;
-        tbody.appendChild(row);
-      });
-    }
+                tbody.appendChild(row);
+            });
+        }
 
-    document.getElementById('employeeForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const message = document.getElementById('message');
+        document.getElementById('employeeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('message');
 
-      const payload = {
-        hotelId: document.getElementById('hotelId').value,
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        address: document.getElementById('address').value,
-        ssn: document.getElementById('ssn').value,
-        role: document.getElementById('role').value
-      };
+            const payload = {
+                hotelId: document.getElementById('hotelId').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                address: document.getElementById('address').value,
+                ssn: document.getElementById('ssn').value,
+                role: document.getElementById('role').value
+            };
 
-      try {
-        const res = await fetch('/api/employees', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+            try {
+                const res = await fetch('/api/employees', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to add employee.');
+
+                message.textContent = `Employee ${data.employee_id} added successfully.`;
+                document.getElementById('employeeForm').reset();
+                await loadEmployees();
+            } catch (err) {
+                message.textContent = err.message;
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to add employee.');
+        async function initPage() {
+            await loadHotels();
+            await loadEmployees();
+        }
 
-        message.textContent = `Employee ${data.employee_id} added successfully.`;
-        document.getElementById('employeeForm').reset();
-        await loadEmployees();
-      } catch (err) {
-        message.textContent = err.message;
-      }
-    });
-
-    async function initPage() {
-      await loadHotels();
-      await loadEmployees();
-    }
-
-    initPage();
-  </script>
+        initPage();
+    </script>
 </body>
+
 </html>

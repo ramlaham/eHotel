@@ -1,37 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hotels - e-Hotels</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
-    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #efefef; }
-  </style>
-</head>
-<body>
-  <a href="/">← Back to Home</a>
-  <h1>Hotels</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th><th>Hotel Name</th><th>Chain</th><th>Category</th><th>Area</th><th>Address</th><th>Room Count</th>
-      </tr>
-    </thead>
-    <tbody id="hotelTableBody"></tbody>
-  </table>
 
-  <script>
-    async function loadHotels() {
-      const res = await fetch('/api/hotels/full');
-      const hotels = await res.json();
-      const tbody = document.getElementById('hotelTableBody');
-      tbody.innerHTML = '';
-      hotels.forEach(h => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotels - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/hotels</div>
+            <div class="browser-btn">✕</div>
+        </div>
+
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
+
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
+
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab" href="/search.html">LISTINGS</a>
+                <a class="top-tab active" href="/hotels.html">HOTELS</a>
+                <a class="top-tab" href="/rooms.html">ROOMS</a>
+                <a class="top-tab" href="/clients.html">CLIENTS</a>
+                <a class="top-tab" href="/employees.html">EMPLOYEES</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>VIEW HOTELS</span>
+                <span>CHAIN LISTINGS</span>
+                <span>OTTAWA AREAS</span>
+            </div>
+        </div>
+
+        <main class="content">
+            <div class="detail-panel">
+                <div class="detail-summary">
+                    <div class="list-card-image"><img src="images/hotel.jpg" alt="Apartment photo"></div>
+                    <div class="list-card-body">
+                        <div class="list-title">Hotel Listings</div>
+                        <div class="list-meta">Premium properties</div>
+                        <button class="green-btn" onclick="window.location.href='/search.html'">VIEW LISTINGS</button>
+                    </div>
+                </div>
+
+                <div class="detail-body">
+                    <div class="detail-title">View Hotels</div>
+                    <div class="detail-description">
+                        Browse all Ottawa hotel listings, grouped by hotel chain, area, category, and room count.
+                    </div>
+                    <div class="detail-footer">
+                        <div class="detail-price">HOTELS</div>
+                        <button class="green-btn" onclick="window.location.href='/rooms.html'">VIEW ROOMS</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h2>Hotel List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hotel Name</th>
+                            <th>Chain</th>
+                            <th>Category</th>
+                            <th>Area</th>
+                            <th>Address</th>
+                            <th>Room Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hotelTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function loadHotels() {
+            const res = await fetch('/api/hotels/full');
+            const hotels = await res.json();
+            const tbody = document.getElementById('hotelTableBody');
+            tbody.innerHTML = '';
+            hotels.forEach(h => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td>${h.hotel_id}</td>
           <td>${h.hotel_name}</td>
           <td>${h.chain_name}</td>
@@ -40,10 +106,11 @@
           <td>${h.address}</td>
           <td>${h.room_count}</td>
         `;
-        tbody.appendChild(row);
-      });
-    }
-    loadHotels();
-  </script>
+                tbody.appendChild(row);
+            });
+        }
+        loadHotels();
+    </script>
 </body>
+
 </html>

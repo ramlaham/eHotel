@@ -1,60 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clients - e-Hotels</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
-    form, .panel { background: white; padding: 20px; border-radius: 10px; max-width: 1000px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 25px; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; }
-    input, button { width: 100%; padding: 10px; font-size: 14px; box-sizing: border-box; }
-    button { margin-top: 15px; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #efefef; }
-    .message { margin: 15px 0; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clients - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
 </head>
+
 <body>
-  <a href="/">← Back to Home</a>
-  <h1>Clients</h1>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/clients</div>
+            <div class="browser-btn">✕</div>
+        </div>
 
-  <div class="panel">
-    <h2>Add Client</h2>
-    <form id="clientForm">
-      <div class="grid">
-        <div><label>First Name</label><input id="firstName" required /></div>
-        <div><label>Last Name</label><input id="lastName" required /></div>
-        <div><label>Address</label><input id="address" required /></div>
-        <div><label>SSN</label><input id="ssn" required /></div>
-        <div><label>Registration Date</label><input type="date" id="registrationDate" required /></div>
-      </div>
-      <button type="submit">Add Client</button>
-    </form>
-    <div id="message" class="message"></div>
-  </div>
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
 
-  <h2>Client List</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th><th>First Name</th><th>Last Name</th><th>Address</th><th>SSN</th><th>Registration Date</th>
-      </tr>
-    </thead>
-    <tbody id="clientTableBody"></tbody>
-  </table>
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
 
-  <script>
-    async function loadClients() {
-      const res = await fetch('/api/clients/full');
-      const clients = await res.json();
-      const tbody = document.getElementById('clientTableBody');
-      tbody.innerHTML = '';
-      clients.forEach(c => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab" href="/search.html">LISTINGS</a>
+                <a class="top-tab " href="/hotels.html">HOTELS</a>
+                <a class="top-tab" href="/rooms.html">ROOMS</a>
+                <a class="top-tab active" href="/clients.html">CLIENTS</a>
+                <a class="top-tab" href="/employees.html">EMPLOYEES</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>ADD CLIENTS</span>
+                <span>VIEW CLIENTS</span>
+                <span>MANAGE DATABASE</span>
+            </div>
+        </div>
+
+        <main class="content">
+            <div class="form-card">
+                <h2>Add Client</h2>
+                <form id="clientForm">
+                    <div class="form-grid">
+                        <div><label>First Name</label><input id="firstName" required /></div>
+                        <div><label>Last Name</label><input id="lastName" required /></div>
+                        <div><label>Address</label><input id="address" required /></div>
+                        <div><label>SSN</label><input id="ssn" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
+                                placeholder="123-456-789" /></div>
+                        <div><label>Registration Date</label><input type="date" id="registrationDate" required /></div>
+                    </div>
+                    <br/>
+                    <button type="submit" class="green-btn">ADD CLIENT</button>
+                </form>
+                <div id="message" class="message"></div>
+            </div>
+
+            <div class="detail-panel">
+                <div class="detail-summary">
+                    <div class="list-card-image"></div>
+                    <div class="list-card-body">
+                        <div class="list-title">Client Records</div>
+                        <div class="list-meta">Guest information management</div>
+                        <button class="green-btn" onclick="window.location.href='/reservations.html'">VIEW
+                            RESERVATIONS</button>
+                    </div>
+                </div>
+
+                <div class="detail-body">
+                    <div class="detail-title">Manage Clients</div>
+                    <div class="detail-description">
+                        Add and review client information used for reservations and rentals across the e-Hotels system.
+                    </div>
+                    <div class="detail-footer">
+                        <div class="detail-price">CLIENTS</div>
+                        <button class="green-btn"
+                            onclick="document.getElementById('clientForm').scrollIntoView({ behavior: 'smooth' })">
+                            CREATE CLIENT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h2>Client List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Address</th>
+                            <th>SSN</th>
+                            <th>Registration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function loadClients() {
+            const res = await fetch('/api/clients/full');
+            const clients = await res.json();
+            const tbody = document.getElementById('clientTableBody');
+            tbody.innerHTML = '';
+            clients.forEach(c => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td>${c.client_id}</td>
           <td>${c.first_name}</td>
           <td>${c.last_name}</td>
@@ -62,41 +125,42 @@
           <td>${c.ssn}</td>
           <td>${c.registration_date}</td>
         `;
-        tbody.appendChild(row);
-      });
-    }
+                tbody.appendChild(row);
+            });
+        }
 
-    document.getElementById('clientForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const message = document.getElementById('message');
+        document.getElementById('clientForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('message');
 
-      const payload = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        address: document.getElementById('address').value,
-        ssn: document.getElementById('ssn').value,
-        registrationDate: document.getElementById('registrationDate').value
-      };
+            const payload = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                address: document.getElementById('address').value,
+                ssn: document.getElementById('ssn').value,
+                registrationDate: document.getElementById('registrationDate').value
+            };
 
-      try {
-        const res = await fetch('/api/clients', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+            try {
+                const res = await fetch('/api/clients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to add client.');
+
+                message.textContent = `Client ${data.client_id} added successfully.`;
+                document.getElementById('clientForm').reset();
+                await loadClients();
+            } catch (err) {
+                message.textContent = err.message;
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to add client.');
-
-        message.textContent = `Client ${data.client_id} added successfully.`;
-        document.getElementById('clientForm').reset();
-        await loadClients();
-      } catch (err) {
-        message.textContent = err.message;
-      }
-    });
-
-    loadClients();
-  </script>
+        loadClients();
+    </script>
 </body>
+
 </html>

@@ -1,37 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rooms - e-Hotels</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
-    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #efefef; }
-  </style>
-</head>
-<body>
-  <a href="/">← Back to Home</a>
-  <h1>Rooms</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Hotel</th><th>Room</th><th>Price</th><th>Capacity</th><th>Surface</th><th>View</th><th>Extra Bed</th><th>Condition</th>
-      </tr>
-    </thead>
-    <tbody id="roomTableBody"></tbody>
-  </table>
 
-  <script>
-    async function loadRooms() {
-      const res = await fetch('/api/rooms');
-      const rooms = await res.json();
-      const tbody = document.getElementById('roomTableBody');
-      tbody.innerHTML = '';
-      rooms.forEach(r => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooms - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/rooms</div>
+            <div class="browser-btn">✕</div>
+        </div>
+
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
+
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
+
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab" href="/search.html">LISTINGS</a>
+                <a class="top-tab" href="/hotels.html">HOTELS</a>
+                <a class="top-tab active" href="/rooms.html">ROOMS</a>
+                <a class="top-tab" href="/clients.html">CLIENTS</a>
+                <a class="top-tab" href="/employees.html">EMPLOYEES</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>ROOM DETAILS</span>
+                <span>VIEW PRICING</span>
+                <span>COMPARE OPTIONS</span>
+            </div>
+        </div>
+
+        <main class="content">
+            <div class="detail-panel">
+                <div class="detail-summary">
+                    <div class="list-card-image"><img src="images/room.jpg" alt="Apartment photo"></div>
+                    <div class="list-card-body">
+                        <div class="list-title">Room Listings</div>
+                        <div class="list-meta">Capacity, price, and views</div>
+                        <button class="green-btn" onclick="window.location.href='/search.html'">SEARCH NOW</button>
+                    </div>
+                </div>
+
+                <div class="detail-body">
+                    <div class="detail-title">View Rooms</div>
+                    <div class="detail-description">
+                        Browse all hotel rooms in the system, including price, capacity, surface area, view type,
+                        extra-bed availability, and room condition.
+                    </div>
+                    <div class="detail-footer">
+                        <div class="detail-price">ROOMS</div>
+                        <button class="green-btn" onclick="window.location.href='/reservations.html'">RESERVE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h2>Room List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hotel</th>
+                            <th>Room</th>
+                            <th>Price</th>
+                            <th>Capacity</th>
+                            <th>Surface</th>
+                            <th>View</th>
+                            <th>Extra Bed</th>
+                            <th>Condition</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roomTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function loadRooms() {
+            const res = await fetch('/api/rooms');
+            const rooms = await res.json();
+            const tbody = document.getElementById('roomTableBody');
+            tbody.innerHTML = '';
+            rooms.forEach(r => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td>${r.hotel_name}</td>
           <td>${r.room_number}</td>
           <td>$${r.price}</td>
@@ -41,10 +109,11 @@
           <td>${r.extra_bed_possible ? 'Yes' : 'No'}</td>
           <td>${r.condition_state}</td>
         `;
-        tbody.appendChild(row);
-      });
-    }
-    loadRooms();
-  </script>
+                tbody.appendChild(row);
+            });
+        }
+        loadRooms();
+    </script>
 </body>
+
 </html>
