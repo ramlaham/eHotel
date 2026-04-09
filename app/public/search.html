@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Rooms - e-Hotels</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 900px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #efefef;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      margin: 15px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="/">← Back to Home</a>
+  <h1>Search Available Rooms</h1>
+
+  <form id="searchForm">
+    <div class="grid">
+      <div>
+        <label for="checkInDate">Check-in Date</label>
+        <input type="date" id="checkInDate" name="checkInDate" required />
+      </div>
+
+      <div>
+        <label for="checkOutDate">Check-out Date</label>
+        <input type="date" id="checkOutDate" name="checkOutDate" required />
+      </div>
+
+      <div>
+        <label for="area">Area</label>
+        <select id="area" name="area">
+          <option value="">Any</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="chainId">Hotel Chain</label>
+        <select id="chainId" name="chainId">
+          <option value="">Any</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="category">Minimum Category</label>
+        <select id="category" name="category">
+          <option value="">Any</option>
+          <option value="1">1 Star</option>
+          <option value="2">2 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="5">5 Stars</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="capacity">Minimum Capacity</label>
+        <input type="number" id="capacity" name="capacity" min="1" />
+      </div>
+
+      <div>
+        <label for="surfaceArea">Minimum Surface Area</label>
+        <input type="number" id="surfaceArea" name="surfaceArea" min="1" step="0.01" />
+      </div>
+
+      <div>
+        <label for="maxPrice">Maximum Price</label>
+        <input type="number" id="maxPrice" name="maxPrice" min="1" step="0.01" />
+      </div>
+    </div>
+
+    <button type="submit">Search Rooms</button>
+  </form>
+
+  <div id="message" class="message"></div>
+
+  <table id="resultsTable" style="display: none;">
+    <thead>
+      <tr>
+        <th>Hotel</th>
+        <th>Chain</th>
+        <th>Area</th>
+        <th>Category</th>
+        <th>Room</th>
+        <th>Price</th>
+        <th>Capacity</th>
+        <th>Surface</th>
+        <th>View</th>
+        <th>Extra Bed</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+
+  <script>
+    async function loadDropdowns() {
+      try {
+        const [areasRes, chainsRes] = await Promise.all([
+          fetch('/api/areas'),
+          fetch('/api/chains')
+        ]);
+
+        const areas = await areasRes.json();
+        const chains = await chainsRes.json();
+
+        const areaSelect = document.getElementById('area');
+        const chainSelect = document.getElementById('chainId');
+
+        areas.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.area;
+          option.textContent = item.area;
+          areaSelect.appendChild(option);
+        });
+
+        chains.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.chain_id;
+          option.textContent = item.chain_name;
+          chainSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading dropdowns:', error);
+      }
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        checkInDate: document.getElementById('checkInDate').value,
+        checkOutDate: document.getElementById('checkOutDate').value,
+        area: document.getElementById('area').value,
+        chainId: document.getElementById('chainId').value,
+        category: document.getElementById('category').value,
+        capacity: document.getElementById('capacity').value,
+        surfaceArea: document.getElementById('surfaceArea').value,
+        maxPrice: document.getElementById('maxPrice').value
+      };
+
+      const messageDiv = document.getElementById('message');
+      const table = document.getElementById('resultsTable');
+      const tbody = document.getElementById('resultsBody');
+
+      messageDiv.textContent = '';
+      tbody.innerHTML = '';
+      table.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/search-rooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const rooms = await response.json();
+
+        if (!response.ok) {
+          throw new Error(rooms.error || 'Search failed.');
+        }
+
+        if (rooms.length === 0) {
+          messageDiv.textContent = 'No rooms matched your search.';
+          return;
+        }
+
+        rooms.forEach(room => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${room.hotel_name}</td>
+            <td>${room.chain_name}</td>
+            <td>${room.area}</td>
+            <td>${room.category}</td>
+            <td>${room.room_number}</td>
+            <td>$${room.price}</td>
+            <td>${room.capacity}</td>
+            <td>${room.surface_area}</td>
+            <td>${room.view_type}</td>
+            <td>${room.extra_bed_possible ? 'Yes' : 'No'}</td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        messageDiv.textContent = `${rooms.length} room(s) found.`;
+        table.style.display = 'table';
+      } catch (error) {
+        console.error('Search error:', error);
+        messageDiv.textContent = error.message;
+      }
+    });
+
+    loadDropdowns();
+  </script>
+</body>
+</html>
