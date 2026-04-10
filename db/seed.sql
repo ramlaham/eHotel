@@ -1,26 +1,4 @@
 -- e-Hotels Project seed data
-
-/*
-Reset tables first if you want to reseed everything
-TRUNCATE TABLE
-    archive_rental,
-    archive_reservation,
-    rental,
-    reservation,
-    room_amenity,
-    room,
-    hotel_manager,
-    employee,
-    client,
-    hotel_phone,
-    hotel_email,
-    hotel,
-    hotel_chain_phone,
-    hotel_chain_email,
-    hotel_chain
-RESTART IDENTITY CASCADE;
-*/
-
 -- Insert hotel chains
 INSERT INTO hotel_chain (chain_id, chain_name, central_office_address, number_of_hotels)
 VALUES
