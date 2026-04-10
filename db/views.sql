@@ -1,5 +1,4 @@
---- e-Hotels Project views
-
+-- e-Hotels Project views
 -- Drop old views in case this file is run again
 DROP VIEW IF EXISTS available_rooms_per_area CASCADE;
 DROP VIEW IF EXISTS hotel_room_capacity CASCADE;
