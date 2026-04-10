@@ -114,7 +114,7 @@ CREATE TABLE hotel_manager (
 );
 
 -- Rooms
--- Uses the same composite primary key idea as Deliverable 1
+-- Uses the same composite primary key idea as liverable 1
 -- Surface area is included for room search filters
 CREATE TABLE room (
     hotel_id               INTEGER NOT NULL,
