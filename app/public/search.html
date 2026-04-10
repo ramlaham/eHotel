@@ -22,18 +22,18 @@
 
         <section class="hero">
             <div class="hero-inner">
-                <div class="brand-logo">eHOTELS</div>
-                <div class="brand-subtitle">OTTAWA</div>
+                <div class="brand-logo">spacerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</div>
             </div>
         </section>
 
         <div class="tagline-bar">The best stay you'll ever make</div>
-        <div class="zigzag"></div>
 
         <div class="top-nav">
             <div class="top-nav-row">
                 <a class="top-tab" href="/">HOME</a>
                 <a class="top-tab active" href="/search.html">LISTINGS</a>
+                <a class="top-tab" href="/reservations.html">RESERVATIONS</a>
+                <a class="top-tab" href="/rentals.html">RENTALS</a>
                 <a class="top-tab" href="/hotels.html">HOTELS</a>
                 <a class="top-tab" href="/rooms.html">ROOMS</a>
                 <a class="top-tab" href="/clients.html">CLIENTS</a>
@@ -45,6 +45,7 @@
                 <span>INTERACTIVE MAP</span>
             </div>
         </div>
+        <div class="zigzag"></div>
 
         <main class="content">
             <div class="form-card">
@@ -102,7 +103,7 @@
                             <input type="number" id="maxPrice" min="1" step="0.01" />
                         </div>
                     </div>
-                    <br/>
+                    <br />
                     <button type="submit" class="green-btn">VIEW LISTINGS</button>
                 </form>
 
@@ -113,6 +114,7 @@
                 <div class="left-column" id="resultsColumn"></div>
 
                 <div class="right-column">
+                    <div id="detailPanel"></div>
                     <div class="map-panel">
                         <div class="map-header">INTERACTIVE MAP</div>
                         <div class="fake-map">
@@ -125,8 +127,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div id="detailPanel"></div>
                 </div>
             </div>
         </main>
@@ -140,106 +140,106 @@
         const defaultDetailImage = '/images/default-detail.webp';
 
         const listCardImages = {
-            "Parliament Grand Ottawa": "/images/parliament-grand-ottawa.jpg",
-            "Rideau View Suites": "/images/rideau-view-suites.jpg",
-            "ByWard Market Inn": "/images/byward-market-inn.jpg",
-            "Canal Crest Hotel": "/images/canal-crest-hotel.jpg",
-            "Lansdowne Stay": "/images/lansdowne-stay.jpg",
-            "Glebe Garden Hotel": "/images/glebe-garden-hotel.jpg",
-            "Capital Crown Suites": "/images/capital-crown-suites.jpg",
-            "Elgin Plaza Hotel": "/images/elgin-plaza-hotel.jpg",
+            "Parliament Grand Ottawa": "/images/northern-stay.png",
+            "Rideau View Suites": "/images/northern-stay.png",
+            "ByWard Market Inn": "/images/northern-stay.png",
+            "Canal Crest Hotel": "/images/northern-stay.png",
+            "Lansdowne Stay": "/images/northern-stay.png",
+            "Glebe Garden Hotel": "/images/northern-stay.png",
+            "Capital Crown Suites": "/images/northern-stay.png",
+            "Elgin Plaza Hotel": "/images/northern-stay.png",
 
-            "Maple Leaf Executive Hotel": "/images/maple-leaf-executive-hotel.jpg",
-            "Ottawa River Retreat": "/images/ottawa-river-retreat.jpg",
-            "Confederation Square Lodge": "/images/confederation-square-lodge.jpg",
-            "Somerset Sky Hotel": "/images/somerset-sky-hotel.jpg",
-            "Beacon Hill Suites": "/images/beacon-hill-suites.jpg",
-            "Westboro Urban Stay": "/images/westboro-urban-stay.jpg",
-            "Rockcliffe Manor Hotel": "/images/rockcliffe-manor-hotel.jpg",
-            "Carleton Heights Inn": "/images/carleton-heights-inn.jpg",
+            "Maple Leaf Executive Hotel": "/images/maple-luxe.avif",
+            "Ottawa River Retreat": "/images/maple-luxe.avif",
+            "Confederation Square Lodge": "/images/maple-luxe.avif",
+            "Somerset Sky Hotel": "/images/maple-luxe.avif",
+            "Beacon Hill Suites": "/images/maple-luxe.avif",
+            "Westboro Urban Stay": "/images/maple-luxe.avif",
+            "Rockcliffe Manor Hotel": "/images/maple-luxe.avif",
+            "Carleton Heights Inn": "/images/maple-luxe.avif",
 
-            "Aurora Parliament Suites": "/images/aurora-parliament-suites.jpg",
-            "Downtown Crescent Hotel": "/images/downtown-crescent-hotel.jpg",
-            "Rideau Royale Inn": "/images/rideau-royale-inn.jpg",
-            "Canal Bridge Hotel": "/images/canal-bridge-hotel.jpg",
-            "The Ottawa Regent": "/images/the-ottawa-regent.jpg",
-            "Market Street Suites": "/images/market-street-suites.jpg",
-            "Merivale Comfort Hotel": "/images/merivale-comfort-hotel.jpg",
-            "Preston House Hotel": "/images/preston-house-hotel.jpg",
+            "Aurora Parliament Suites": "/images/aurora-suites.avif",
+            "Downtown Crescent Hotel": "/images/aurora-suites.avif",
+            "Rideau Royale Inn": "/images/aurora-suites.avif",
+            "Canal Bridge Hotel": "/images/aurora-suites.avif",
+            "The Ottawa Regent": "/images/aurora-suites.avif",
+            "Market Street Suites": "/images/aurora-suites.avif",
+            "Merivale Comfort Hotel": "/images/aurora-suites.avif",
+            "Preston House Hotel": "/images/aurora-suites.avif",
 
-            "Cedar Crown Ottawa": "/images/cedar-crown-ottawa.jpg",
-            "Embassy Row Hotel": "/images/embassy-row-hotel.jpg",
-            "Blue Heron Lodge": "/images/blue-heron-lodge.jpg",
-            "Golden Maple Inn": "/images/golden-maple-inn.jpg",
-            "Wellington Court Hotel": "/images/wellington-court-hotel.jpg",
-            "Centretown Signature Suites": "/images/centretown-signature-suites.jpg",
-            "Riverside Grand Hotel": "/images/riverside-grand-hotel.jpg",
-            "Airport Beacon Hotel": "/images/airport-beacon-hotel.jpg",
+            "Cedar Crown Ottawa": "/images/cedar-grand.webp",
+            "Embassy Row Hotel": "/images/cedar-grand.webp",
+            "Blue Heron Lodge": "/images/cedar-grand.webp",
+            "Golden Maple Inn": "/images/cedar-grand.webp",
+            "Wellington Court Hotel": "/images/cedar-grand.webp",
+            "Centretown Signature Suites": "/images/cedar-grand.webp",
+            "Riverside Grand Hotel": "/images/cedar-grand.webp",
+            "Airport Beacon Hotel": "/images/cedar-grand.webp",
 
-            "BlueWave Capital Hotel": "/images/bluewave-capital-hotel.jpg",
-            "Ottawa Horizon Suites": "/images/ottawa-horizon-suites.jpg",
-            "Victoria Park Inn": "/images/victoria-park-inn.jpg",
-            "King Edward Hotel": "/images/king-edward-hotel.jpg",
-            "Chateau Laurier View": "/images/chateau-laurier-view.jpg",
-            "Capital Harbour Suites": "/images/capital-harbour-suites.jpg",
-            "Stonebridge Hotel Ottawa": "/images/stonebridge-hotel-ottawa.jpg",
-            "Northern Lights Plaza": "/images/northern-lights-plaza.jpg"
+            "BlueWave Capital Hotel": "/images/bluewave-hotels.jpg",
+            "Ottawa Horizon Suites": "/images/bluewave-hotels.jpg",
+            "Victoria Park Inn": "/images/bluewave-hotels.jpg",
+            "King Edward Hotel": "/images/bluewave-hotels.jpg",
+            "Chateau Laurier View": "/images/bluewave-hotels.jpg",
+            "Capital Harbour Suites": "/images/bluewave-hotels.jpg",
+            "Stonebridge Hotel Ottawa": "/images/bluewave-hotels.jpg",
+            "Northern Lights Plaza": "/images/bluewave-hotels.jpg"
         };
 
         const detailCardImages = {
-            "Parliament Grand Ottawa": "/images/parliament-grand-ottawa.jpg",
-            "Rideau View Suites": "/images/rideau-view-suites.jpg",
-            "ByWard Market Inn": "/images/byward-market-inn.jpg",
-            "Canal Crest Hotel": "/images/canal-crest-hotel.jpg",
-            "Lansdowne Stay": "/images/lansdowne-stay.jpg",
-            "Glebe Garden Hotel": "/images/glebe-garden-hotel.jpg",
-            "Capital Crown Suites": "/images/capital-crown-suites.jpg",
-            "Elgin Plaza Hotel": "/images/elgin-plaza-hotel.jpg",
+            "Parliament Grand Ottawa": "/images/northern-stay-room.jpg",
+            "Rideau View Suites": "/images/northern-stay-room.jpg",
+            "ByWard Market Inn": "/images/northern-stay-room.jpg",
+            "Canal Crest Hotel": "/images/northern-stay-room.jpg",
+            "Lansdowne Stay": "/images/northern-stay-room.jpg",
+            "Glebe Garden Hotel": "/images/northern-stay-room.jpg",
+            "Capital Crown Suites": "/images/northern-stay-room.jpg",
+            "Elgin Plaza Hotel": "/images/northern-stay-room.jpg",
 
-            "Maple Leaf Executive Hotel": "/images/maple-leaf-executive-hotel.jpg",
-            "Ottawa River Retreat": "/images/ottawa-river-retreat.jpg",
-            "Confederation Square Lodge": "/images/confederation-square-lodge.jpg",
-            "Somerset Sky Hotel": "/images/somerset-sky-hotel.jpg",
-            "Beacon Hill Suites": "/images/beacon-hill-suites.jpg",
-            "Westboro Urban Stay": "/images/westboro-urban-stay.jpg",
-            "Rockcliffe Manor Hotel": "/images/rockcliffe-manor-hotel.jpg",
-            "Carleton Heights Inn": "/images/carleton-heights-inn.jpg",
+            "Maple Leaf Executive Hotel": "/images/maple-luxe-room.jpg",
+            "Ottawa River Retreat": "/images/maple-luxe-room.jpg",
+            "Confederation Square Lodge": "/images/maple-luxe-room.jpg",
+            "Somerset Sky Hotel": "/images/maple-luxe-room.jpg",
+            "Beacon Hill Suites": "/images/maple-luxe-room.jpg",
+            "Westboro Urban Stay": "/images/maple-luxe-room.jpg",
+            "Rockcliffe Manor Hotel": "/images/maple-luxe-room.jpg",
+            "Carleton Heights Inn": "/images/maple-luxe-room.jpg",
 
-            "Aurora Parliament Suites": "/images/aurora-parliament-suites.jpg",
-            "Downtown Crescent Hotel": "/images/downtown-crescent-hotel.jpg",
-            "Rideau Royale Inn": "/images/rideau-royale-inn.jpg",
-            "Canal Bridge Hotel": "/images/canal-bridge-hotel.jpg",
-            "The Ottawa Regent": "/images/the-ottawa-regent.jpg",
-            "Market Street Suites": "/images/market-street-suites.jpg",
-            "Merivale Comfort Hotel": "/images/merivale-comfort-hotel.jpg",
-            "Preston House Hotel": "/images/preston-house-hotel.jpg",
+            "Aurora Parliament Suites": "/images/aurora-suites-room.jpg",
+            "Downtown Crescent Hotel": "/images/aurora-suites-room.jpg",
+            "Rideau Royale Inn": "/images/aurora-suites-room.jpg",
+            "Canal Bridge Hotel": "/images/aurora-suites-room.jpg",
+            "The Ottawa Regent": "/images/aurora-suites-room.jpg",
+            "Market Street Suites": "/images/aurora-suites-room.jpg",
+            "Merivale Comfort Hotel": "/images/aurora-suites-room.jpg",
+            "Preston House Hotel": "/images/aurora-suites-room.jpg",
 
-            "Cedar Crown Ottawa": "/images/cedar-crown-ottawa.jpg",
-            "Embassy Row Hotel": "/images/embassy-row-hotel.jpg",
-            "Blue Heron Lodge": "/images/blue-heron-lodge.jpg",
-            "Golden Maple Inn": "/images/golden-maple-inn.jpg",
-            "Wellington Court Hotel": "/images/wellington-court-hotel.jpg",
-            "Centretown Signature Suites": "/images/centretown-signature-suites.jpg",
-            "Riverside Grand Hotel": "/images/riverside-grand-hotel.jpg",
-            "Airport Beacon Hotel": "/images/airport-beacon-hotel.jpg",
+            "Cedar Crown Ottawa": "/images/cedar-grand-room.webp",
+            "Embassy Row Hotel": "/images/cedar-grand-room.webp",
+            "Blue Heron Lodge": "/images/cedar-grand-room.webp",
+            "Golden Maple Inn": "/images/cedar-grand-room.webp",
+            "Wellington Court Hotel": "/images/cedar-grand-room.webp",
+            "Centretown Signature Suites": "/images/cedar-grand-room.webp",
+            "Riverside Grand Hotel": "/images/cedar-grand-room.webp",
+            "Airport Beacon Hotel": "/images/cedar-grand-room.webp",
 
-            "BlueWave Capital Hotel": "/images/bluewave-capital-hotel.jpg",
-            "Ottawa Horizon Suites": "/images/ottawa-horizon-suites.jpg",
-            "Victoria Park Inn": "/images/victoria-park-inn.jpg",
-            "King Edward Hotel": "/images/king-edward-hotel.jpg",
-            "Chateau Laurier View": "/images/chateau-laurier-view.jpg",
-            "Capital Harbour Suites": "/images/capital-harbour-suites.jpg",
-            "Stonebridge Hotel Ottawa": "/images/stonebridge-hotel-ottawa.jpg",
-            "Northern Lights Plaza": "/images/northern-lights-plaza.jpg"
+            "BlueWave Capital Hotel": "/images/bluewave-hotels-room.jpg",
+            "Ottawa Horizon Suites": "/images/bluewave-hotels-room.jpg",
+            "Victoria Park Inn": "/images/bluewave-hotels-room.jpg",
+            "King Edward Hotel": "/images/bluewave-hotels-room.jpg",
+            "Chateau Laurier View": "/images/bluewave-hotels-room.jpg",
+            "Capital Harbour Suites": "/images/bluewave-hotels-room.jpg",
+            "Stonebridge Hotel Ottawa": "/images/bluewave-hotels-room.jpg",
+            "Northern Lights Plaza": "/images/bluewave-hotels-room.jpg"
         };
 
         function getListCardImage(room) {
-            const key = `${room.hotel_name}-${room.room_number}`;
+            const key = `${room.hotel_name}`;
             return listCardImages[key] || defaultListImage;
         }
 
         function getDetailCardImage(room) {
-            const key = `${room.hotel_name}-${room.room_number}`;
+            const key = `${room.hotel_name}`;
             return detailCardImages[key] || defaultDetailImage;
         }
 
@@ -287,7 +287,6 @@
             <div class="list-card-body">
               <div class="list-title">${room.hotel_name} - Room ${room.room_number}</div>
               <div class="list-meta">${room.area} · ${room.capacity} guests · ${room.surface_area} m²</div>
-              <button class="green-btn" onclick="window.location.href='/reservations.html'">RESERVE ROOM</button>
             </div>
           </div>
           <div class="detail-body">

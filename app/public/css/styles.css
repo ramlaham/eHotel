@@ -19,7 +19,7 @@ a {
 }
 
 .page-shell {
-    max-width: 1280px;
+    max-width: 1480px;
     margin: 0 auto;
     background: #f7f7f7;
     min-height: 100vh;
@@ -67,20 +67,12 @@ a {
     position: relative;
     background:
         linear-gradient(rgba(40, 105, 150, 0.15), rgba(40, 105, 150, 0.15)),
-        linear-gradient(180deg, #75a8d0 0%, #88b7dc 35%, #d8d2b2 100%);
+        url('/images/hero-banner.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 220px;
     overflow: hidden;
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    right: -80px;
-    top: 0;
-    width: 360px;
-    height: 220px;
-    background: linear-gradient(135deg, rgba(223, 204, 145, 0.8), rgba(200, 180, 120, 0.3));
-    transform: skewX(-25deg);
 }
 
 .hero-inner {
@@ -96,10 +88,18 @@ a {
 }
 
 .brand-logo {
-    font-size: 54px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
+    position: relative;
+    color: transparent;
+    background:
+        url('/images/hero-logo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 100;
 }
 
 .brand-subtitle {
@@ -121,8 +121,8 @@ a {
 .zigzag {
     height: 14px;
     background:
-        linear-gradient(-45deg, #19713d 8px, transparent 0),
-        linear-gradient(45deg, #19713d 8px, transparent 0);
+        linear-gradient(225deg, #19713d 8px, transparent 0),
+        linear-gradient(-225deg, #19713d 8px, transparent 0);
     background-size: 16px 14px;
     background-position: left bottom;
     background-repeat: repeat-x;
@@ -138,6 +138,7 @@ a {
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+    justify-content: center;
 }
 
 .top-tab {
@@ -160,6 +161,7 @@ a {
     color: #f1e8a4;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 22px;
     font-size: 14px;
     font-weight: 700;
@@ -176,10 +178,25 @@ a {
     margin-bottom: 24px;
 }
 
+.overlay-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(25, 113, 61, 0.95);
+    color: white;
+    padding: 14px 10px;
+    font-size: 28px;
+    font-weight: 700;
+    border: 3px solid #dce9df;
+}
+
 .image-mosaic {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
+    opacity: 0.75;
 }
 
 .mosaic-tile {
@@ -188,10 +205,48 @@ a {
     position: relative;
 }
 
-.mosaic-large {
+.mosaic-large1 {
     grid-column: span 2;
     grid-row: span 2;
     min-height: 288px;
+    background-image: url('/images/default-listing.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mosaic-large2 {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 288px;
+    background-image: url('/images/bluewave-hotels.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mosaic-large3 {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 288px;
+    background-image: url('/images/cedar-grand.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mosaic-large4 {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 288px;
+    background-image: url('/images/northern-stay.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.image-mosaic:hover {
+    opacity: 0.95;
 }
 
 .cta-overlay {
@@ -200,7 +255,7 @@ a {
     bottom: 16px;
     background: rgba(25, 113, 61, 0.95);
     color: white;
-    padding: 14px 18px;
+    padding: 14px 10px;
     font-size: 28px;
     font-weight: 700;
     border: 3px solid #dce9df;
@@ -208,12 +263,16 @@ a {
 
 .side-promo {
     min-height: 288px;
-    background: linear-gradient(135deg, #201b1b, #5c3f2b);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('/images/executive.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: white;
     padding: 28px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    opacity: 0.75;
 }
 
 .side-promo-title {
