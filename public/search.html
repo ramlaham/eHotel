@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listings - e-Hotels</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <div class="browser-bar">
+            <div class="browser-buttons">
+                <div class="browser-btn">◀</div>
+                <div class="browser-btn">▶</div>
+                <div class="browser-btn">⌂</div>
+            </div>
+            <div class="browser-address">www.ehotelsottawa.com/listings</div>
+            <div class="browser-btn">✕</div>
+        </div>
+
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="brand-logo">eHOTELS</div>
+                <div class="brand-subtitle">OTTAWA</div>
+            </div>
+        </section>
+
+        <div class="tagline-bar">The best stay you'll ever make</div>
+        <div class="zigzag"></div>
+
+        <div class="top-nav">
+            <div class="top-nav-row">
+                <a class="top-tab" href="/">HOME</a>
+                <a class="top-tab active" href="/search.html">LISTINGS</a>
+                <a class="top-tab" href="/hotels.html">HOTELS</a>
+                <a class="top-tab" href="/rooms.html">ROOMS</a>
+                <a class="top-tab" href="/clients.html">CLIENTS</a>
+                <a class="top-tab" href="/employees.html">EMPLOYEES</a>
+            </div>
+            <div class="sub-filter-row">
+                <span>FILTER YOUR SEARCH</span>
+                <span>OTTAWA LISTINGS</span>
+                <span>INTERACTIVE MAP</span>
+            </div>
+        </div>
+
+        <main class="content">
+            <div class="form-card">
+                <h2>Search Available Rooms</h2>
+                <form id="searchForm">
+                    <div class="form-grid">
+                        <div>
+                            <label for="checkInDate">Check-in Date</label>
+                            <input type="date" id="checkInDate" required />
+                        </div>
+
+                        <div>
+                            <label for="checkOutDate">Check-out Date</label>
+                            <input type="date" id="checkOutDate" required />
+                        </div>
+
+                        <div>
+                            <label for="area">Area</label>
+                            <select id="area">
+                                <option value="">Any</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="chainId">Hotel Chain</label>
+                            <select id="chainId">
+                                <option value="">Any</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="category">Minimum Category</label>
+                            <select id="category">
+                                <option value="">Any</option>
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="capacity">Minimum Capacity</label>
+                            <input type="number" id="capacity" min="1" />
+                        </div>
+
+                        <div>
+                            <label for="surfaceArea">Minimum Surface Area</label>
+                            <input type="number" id="surfaceArea" min="1" step="0.01" />
+                        </div>
+
+                        <div>
+                            <label for="maxPrice">Maximum Price</label>
+                            <input type="number" id="maxPrice" min="1" step="0.01" />
+                        </div>
+                    </div>
+                    <br/>
+                    <button type="submit" class="green-btn">VIEW LISTINGS</button>
+                </form>
+
+                <div id="message" class="message"></div>
+            </div>
+
+            <div class="listings-layout">
+                <div class="left-column" id="resultsColumn"></div>
+
+                <div class="right-column">
+                    <div class="map-panel">
+                        <div class="map-header">INTERACTIVE MAP</div>
+                        <div class="fake-map">
+                            <div class="map-marker" style="left: 58%; top: 34%;"></div>
+                            <div class="map-marker" style="left: 72%; top: 52%; transform: rotate(-45deg) scale(0.8);">
+                            </div>
+                            <div class="map-marker" style="left: 68%; top: 60%; transform: rotate(-45deg) scale(0.8);">
+                            </div>
+                            <div class="map-marker" style="left: 78%; top: 63%; transform: rotate(-45deg) scale(0.8);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="detailPanel"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentRooms = [];
+        let selectedRoomIndex = 0;
+
+        const defaultListImage = '/images/default-listing.avif';
+        const defaultDetailImage = '/images/default-detail.webp';
+
+        const listCardImages = {
+            "Parliament Grand Ottawa": "/images/parliament-grand-ottawa.jpg",
+            "Rideau View Suites": "/images/rideau-view-suites.jpg",
+            "ByWard Market Inn": "/images/byward-market-inn.jpg",
+            "Canal Crest Hotel": "/images/canal-crest-hotel.jpg",
+            "Lansdowne Stay": "/images/lansdowne-stay.jpg",
+            "Glebe Garden Hotel": "/images/glebe-garden-hotel.jpg",
+            "Capital Crown Suites": "/images/capital-crown-suites.jpg",
+            "Elgin Plaza Hotel": "/images/elgin-plaza-hotel.jpg",
+
+            "Maple Leaf Executive Hotel": "/images/maple-leaf-executive-hotel.jpg",
+            "Ottawa River Retreat": "/images/ottawa-river-retreat.jpg",
+            "Confederation Square Lodge": "/images/confederation-square-lodge.jpg",
+            "Somerset Sky Hotel": "/images/somerset-sky-hotel.jpg",
+            "Beacon Hill Suites": "/images/beacon-hill-suites.jpg",
+            "Westboro Urban Stay": "/images/westboro-urban-stay.jpg",
+            "Rockcliffe Manor Hotel": "/images/rockcliffe-manor-hotel.jpg",
+            "Carleton Heights Inn": "/images/carleton-heights-inn.jpg",
+
+            "Aurora Parliament Suites": "/images/aurora-parliament-suites.jpg",
+            "Downtown Crescent Hotel": "/images/downtown-crescent-hotel.jpg",
+            "Rideau Royale Inn": "/images/rideau-royale-inn.jpg",
+            "Canal Bridge Hotel": "/images/canal-bridge-hotel.jpg",
+            "The Ottawa Regent": "/images/the-ottawa-regent.jpg",
+            "Market Street Suites": "/images/market-street-suites.jpg",
+            "Merivale Comfort Hotel": "/images/merivale-comfort-hotel.jpg",
+            "Preston House Hotel": "/images/preston-house-hotel.jpg",
+
+            "Cedar Crown Ottawa": "/images/cedar-crown-ottawa.jpg",
+            "Embassy Row Hotel": "/images/embassy-row-hotel.jpg",
+            "Blue Heron Lodge": "/images/blue-heron-lodge.jpg",
+            "Golden Maple Inn": "/images/golden-maple-inn.jpg",
+            "Wellington Court Hotel": "/images/wellington-court-hotel.jpg",
+            "Centretown Signature Suites": "/images/centretown-signature-suites.jpg",
+            "Riverside Grand Hotel": "/images/riverside-grand-hotel.jpg",
+            "Airport Beacon Hotel": "/images/airport-beacon-hotel.jpg",
+
+            "BlueWave Capital Hotel": "/images/bluewave-capital-hotel.jpg",
+            "Ottawa Horizon Suites": "/images/ottawa-horizon-suites.jpg",
+            "Victoria Park Inn": "/images/victoria-park-inn.jpg",
+            "King Edward Hotel": "/images/king-edward-hotel.jpg",
+            "Chateau Laurier View": "/images/chateau-laurier-view.jpg",
+            "Capital Harbour Suites": "/images/capital-harbour-suites.jpg",
+            "Stonebridge Hotel Ottawa": "/images/stonebridge-hotel-ottawa.jpg",
+            "Northern Lights Plaza": "/images/northern-lights-plaza.jpg"
+        };
+
+        const detailCardImages = {
+            "Parliament Grand Ottawa": "/images/parliament-grand-ottawa.jpg",
+            "Rideau View Suites": "/images/rideau-view-suites.jpg",
+            "ByWard Market Inn": "/images/byward-market-inn.jpg",
+            "Canal Crest Hotel": "/images/canal-crest-hotel.jpg",
+            "Lansdowne Stay": "/images/lansdowne-stay.jpg",
+            "Glebe Garden Hotel": "/images/glebe-garden-hotel.jpg",
+            "Capital Crown Suites": "/images/capital-crown-suites.jpg",
+            "Elgin Plaza Hotel": "/images/elgin-plaza-hotel.jpg",
+
+            "Maple Leaf Executive Hotel": "/images/maple-leaf-executive-hotel.jpg",
+            "Ottawa River Retreat": "/images/ottawa-river-retreat.jpg",
+            "Confederation Square Lodge": "/images/confederation-square-lodge.jpg",
+            "Somerset Sky Hotel": "/images/somerset-sky-hotel.jpg",
+            "Beacon Hill Suites": "/images/beacon-hill-suites.jpg",
+            "Westboro Urban Stay": "/images/westboro-urban-stay.jpg",
+            "Rockcliffe Manor Hotel": "/images/rockcliffe-manor-hotel.jpg",
+            "Carleton Heights Inn": "/images/carleton-heights-inn.jpg",
+
+            "Aurora Parliament Suites": "/images/aurora-parliament-suites.jpg",
+            "Downtown Crescent Hotel": "/images/downtown-crescent-hotel.jpg",
+            "Rideau Royale Inn": "/images/rideau-royale-inn.jpg",
+            "Canal Bridge Hotel": "/images/canal-bridge-hotel.jpg",
+            "The Ottawa Regent": "/images/the-ottawa-regent.jpg",
+            "Market Street Suites": "/images/market-street-suites.jpg",
+            "Merivale Comfort Hotel": "/images/merivale-comfort-hotel.jpg",
+            "Preston House Hotel": "/images/preston-house-hotel.jpg",
+
+            "Cedar Crown Ottawa": "/images/cedar-crown-ottawa.jpg",
+            "Embassy Row Hotel": "/images/embassy-row-hotel.jpg",
+            "Blue Heron Lodge": "/images/blue-heron-lodge.jpg",
+            "Golden Maple Inn": "/images/golden-maple-inn.jpg",
+            "Wellington Court Hotel": "/images/wellington-court-hotel.jpg",
+            "Centretown Signature Suites": "/images/centretown-signature-suites.jpg",
+            "Riverside Grand Hotel": "/images/riverside-grand-hotel.jpg",
+            "Airport Beacon Hotel": "/images/airport-beacon-hotel.jpg",
+
+            "BlueWave Capital Hotel": "/images/bluewave-capital-hotel.jpg",
+            "Ottawa Horizon Suites": "/images/ottawa-horizon-suites.jpg",
+            "Victoria Park Inn": "/images/victoria-park-inn.jpg",
+            "King Edward Hotel": "/images/king-edward-hotel.jpg",
+            "Chateau Laurier View": "/images/chateau-laurier-view.jpg",
+            "Capital Harbour Suites": "/images/capital-harbour-suites.jpg",
+            "Stonebridge Hotel Ottawa": "/images/stonebridge-hotel-ottawa.jpg",
+            "Northern Lights Plaza": "/images/northern-lights-plaza.jpg"
+        };
+
+        function getListCardImage(room) {
+            const key = `${room.hotel_name}-${room.room_number}`;
+            return listCardImages[key] || defaultListImage;
+        }
+
+        function getDetailCardImage(room) {
+            const key = `${room.hotel_name}-${room.room_number}`;
+            return detailCardImages[key] || defaultDetailImage;
+        }
+
+        async function loadDropdowns() {
+            try {
+                const [areasRes, chainsRes] = await Promise.all([
+                    fetch('/api/areas'),
+                    fetch('/api/chains')
+                ]);
+
+                const areas = await areasRes.json();
+                const chains = await chainsRes.json();
+
+                const areaSelect = document.getElementById('area');
+                const chainSelect = document.getElementById('chainId');
+
+                areas.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.area;
+                    option.textContent = item.area;
+                    areaSelect.appendChild(option);
+                });
+
+                chains.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.chain_id;
+                    option.textContent = item.chain_name;
+                    chainSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading dropdowns:', error);
+            }
+        }
+
+        function renderDetail(room) {
+            const panel = document.getElementById('detailPanel');
+            const imageUrl = getDetailCardImage(room);
+
+            panel.innerHTML = `
+        <div class="detail-panel">
+          <div class="detail-summary">
+            <div class="detail-image-placeholder"
+                 style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
+            </div>
+            <div class="list-card-body">
+              <div class="list-title">${room.hotel_name} - Room ${room.room_number}</div>
+              <div class="list-meta">${room.area} · ${room.capacity} guests · ${room.surface_area} m²</div>
+              <button class="green-btn" onclick="window.location.href='/reservations.html'">RESERVE ROOM</button>
+            </div>
+          </div>
+          <div class="detail-body">
+            <div class="detail-title">${room.hotel_name}</div>
+            <div class="detail-description">
+              Enjoy a premium Ottawa stay in ${room.area}. This room includes a ${room.view_type.toLowerCase()} view,
+              capacity for ${room.capacity} guest(s), and ${room.extra_bed_possible ? 'the option for an extra bed' : 'standard bedding'}.
+              Perfect for reservations, direct rentals, and quick booking through e-Hotels.
+            </div>
+            <div class="detail-footer">
+              <div class="detail-price">$${room.price}</div>
+              <div style="display:flex; gap:12px;">
+                <button class="green-btn" onclick="goToReservation(${room.hotel_id}, '${room.room_number}')">RESERVE</button>
+                <button class="green-btn" onclick="goToRental(${room.hotel_id}, '${room.room_number}')">RENT</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      `;
+        }
+
+        function goToReservation(hotelId, roomNumber) {
+            window.location.href = `/reservations.html?hotelId=${encodeURIComponent(hotelId)}&roomNumber=${encodeURIComponent(roomNumber)}`;
+        }
+
+        function goToRental(hotelId, roomNumber) {
+            window.location.href = `/rentals.html?hotelId=${encodeURIComponent(hotelId)}&roomNumber=${encodeURIComponent(roomNumber)}`;
+        }
+
+        function selectRoom(index) {
+            selectedRoomIndex = index;
+            renderCards(currentRooms);
+            renderDetail(currentRooms[index]);
+        }
+
+        function renderCards(rooms) {
+            const column = document.getElementById('resultsColumn');
+            column.innerHTML = '';
+
+            if (!rooms || rooms.length === 0) {
+                column.innerHTML = '<div class="form-card"><h3>No rooms matched your search.</h3></div>';
+                document.getElementById('detailPanel').innerHTML = '';
+                return;
+            }
+
+            rooms.forEach((room, index) => {
+                const imageUrl = getListCardImage(room);
+
+                const card = document.createElement('div');
+                card.className = `list-card ${index === selectedRoomIndex ? 'selected' : ''}`;
+                card.onclick = () => selectRoom(index);
+
+                card.innerHTML = `
+          <div class="list-card-image"
+               style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
+            ${index < 2 ? '<div class="ribbon">NEW</div>' : ''}
+          </div>
+          <div class="list-card-body">
+            <div class="list-title">${room.hotel_name}</div>
+            <div class="list-meta">Room ${room.room_number} · ${room.capacity} guests · ${room.surface_area} m²</div>
+            <div class="list-price">$${room.price}</div>
+            <div class="buy-row">
+              <div class="list-area">${room.area}</div>
+              <button class="green-btn" type="button" onclick="event.stopPropagation(); selectRoom(${index});">VIEW</button>
+            </div>
+          </div>
+        `;
+                column.appendChild(card);
+            });
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                checkInDate: document.getElementById('checkInDate').value,
+                checkOutDate: document.getElementById('checkOutDate').value,
+                area: document.getElementById('area').value,
+                chainId: document.getElementById('chainId').value,
+                category: document.getElementById('category').value,
+                capacity: document.getElementById('capacity').value,
+                surfaceArea: document.getElementById('surfaceArea').value,
+                maxPrice: document.getElementById('maxPrice').value
+            };
+
+            try {
+                const response = await fetch('/api/search-rooms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const rooms = await response.json();
+                if (!response.ok) throw new Error(rooms.error || 'Search failed.');
+
+                currentRooms = rooms;
+                selectedRoomIndex = 0;
+
+                document.getElementById('message').textContent = `${rooms.length} listing(s) found.`;
+                renderCards(rooms);
+
+                if (rooms.length > 0) {
+                    renderDetail(rooms[0]);
+                } else {
+                    document.getElementById('detailPanel').innerHTML = '';
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = error.message;
+            }
+        });
+
+        loadDropdowns();
+    </script>
+</body>
+
+</html>
