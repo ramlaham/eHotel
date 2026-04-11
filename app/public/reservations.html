@@ -21,10 +21,10 @@
         </div>
 
         <section class="hero">
-            <div class="hero-inner">
-                <div class="brand-logo">spacerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</div>
-            </div>
-        </section>
+      <div class="hero-inner">
+        <div class="brand-logo">spacerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</div>
+      </div>
+    </section>
 
         <div class="tagline-bar">The best stay you'll ever make</div>
 
@@ -93,7 +93,7 @@
                             <input type="date" id="checkOutDate" required />
                         </div>
                     </div>
-                    <br />
+                    <br/>
 
                     <button type="submit" class="green-btn">RESERVE ROOM</button>
                 </form>
@@ -189,7 +189,10 @@
           <td>${r.check_out_date}</td>
           <td>
             <select class="status-select" onchange="updateReservationStatus(${r.reservation_id}, this.value)">
-              <button class="green-btn" onclick="deleteReservation(${r.reservation_id})">DELETE</button>
+              <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>pending</option>
+              <option value="confirmed" ${r.status === 'confirmed' ? 'selected' : ''}>confirmed</option>
+              <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>cancelled</option>
+              <option value="completed" ${r.status === 'completed' ? 'selected' : ''}>completed</option>
             </select>
           </td>
           <td>
