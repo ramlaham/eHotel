@@ -1,5 +1,4 @@
 -- e-Hotels Project triggers
-
 -- Drop old triggers and functions so the file can be run again
 DROP TRIGGER IF EXISTS trg_check_hotel_manager_same_hotel ON hotel_manager;
 DROP FUNCTION IF EXISTS check_hotel_manager_same_hotel();
