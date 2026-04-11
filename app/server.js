@@ -3,7 +3,7 @@ const path = require('path');
 const pool = require('./db');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,10 +15,6 @@ function isValidSSN(ssn) {
 
 function isValidName(name) {
   return /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(name);
-}
-
-function isValidAddress(address) {
-  return /^[0-9]+\s+[A-Za-z]+(?:\s+[A-Za-z]+)*\s+(St|Street|Rd|Road|Ave|Avenue|Dr|Drive|Blvd|Boulevard)$/.test(address);
 }
 
 app.post('/api/search-rooms', async (req, res) => {
@@ -467,10 +463,6 @@ app.post('/api/clients', async (req, res) => {
       return res.status(400).json({ error: 'Last name must contain letters only.' });
     }
 
-    if (!isValidAddress(address)) {
-      return res.status(400).json({ error: 'Address must be in a format like 8 Street Rd.' });
-    }
-
     if (!isValidSSN(ssn)) {
       return res.status(400).json({ error: 'SSN must be in the format 999-999-999.' });
     }
@@ -519,10 +511,6 @@ app.post('/api/employees', async (req, res) => {
 
     if (!isValidName(lastName)) {
       return res.status(400).json({ error: 'Last name must contain letters only.' });
-    }
-
-    if (!isValidAddress(address)) {
-      return res.status(400).json({ error: 'Address must be in a format like 8 Street Rd.' });
     }
 
     if (!['Manager', 'Receptionist', 'Clerk'].includes(role)) {
@@ -729,5 +717,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

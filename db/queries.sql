@@ -19,7 +19,7 @@ JOIN hotel_chain hc
     ON h.chain_id = hc.chain_id
 JOIN room r
     ON h.hotel_id = r.hotel_id
-WHERE h.area = 'Centretown'
+WHERE h.area = 'Nepean'
   AND hc.chain_name = 'Northern Stay'
   AND h.category >= 3
   AND r.capacity >= 2

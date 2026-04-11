@@ -176,8 +176,6 @@ CREATE TABLE rental (
         REFERENCES client(client_id),
     FOREIGN KEY (hotel_id, room_number)
         REFERENCES room(hotel_id, room_number),
-    FOREIGN KEY (reservation_id)
-        REFERENCES reservation(reservation_id),
     FOREIGN KEY (processed_by_employee_id)
         REFERENCES employee(employee_id),
     CHECK (rental_end_date > rental_start_date),
