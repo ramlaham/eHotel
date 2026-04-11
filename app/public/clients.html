@@ -56,8 +56,7 @@
                                 pattern="[A-Za-z]+(?:[ -][A-Za-z]+)*" placeholder="John" /></div>
                         <div><label>Last Name</label><input id="lastName" required pattern="[A-Za-z]+(?:[ -][A-Za-z]+)*"
                                 placeholder="Smith" /></div>
-                        <div><label>Address</label><input id="address" required 
-                                placeholder="8 Street Rd" /></div>
+                        <div><label>Address</label><input id="address" required placeholder="8 Street Rd" /></div>
                         <div><label>SSN</label><input id="ssn" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
                                 placeholder="123-456-789" /></div>
                         <div><label>Registration Date</label><input type="date" id="registrationDate" required /></div>
@@ -79,6 +78,7 @@
                             <th>Address</th>
                             <th>SSN</th>
                             <th>Registration Date</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="clientTableBody"></tbody>
@@ -88,6 +88,26 @@
     </div>
 
     <script>
+        async function deleteClient(clientId) {
+            if (!confirm(`Delete client ${clientId}?`)) return;
+
+            const message = document.getElementById('clientMessage');
+
+            try {
+                const res = await fetch(`/api/clients/${clientId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to delete client.');
+
+                message.textContent = `Client ${clientId} deleted successfully.`;
+                await loadClients();
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+
         async function loadClients() {
             const res = await fetch('/api/clients/full');
             const clients = await res.json();
@@ -102,6 +122,9 @@
           <td>${c.address}</td>
           <td>${c.ssn}</td>
           <td>${c.registration_date}</td>
+          <td>
+  <button class="green-btn" onclick="deleteClient(${client.client_id})">DELETE</button>
+</td>
         `;
                 tbody.appendChild(row);
             });

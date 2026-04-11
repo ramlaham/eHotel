@@ -47,6 +47,76 @@
         </div>
         <div class="zigzag"></div>
 
+        <div class="form-card">
+            <h2>Add Room</h2>
+            <form id="roomForm">
+                <div class="form-grid">
+                    <div>
+                        <label for="hotelId">Hotel</label>
+                        <select id="hotelId" required>
+                            <option value="">Select a hotel</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="roomNumber">Room Number</label>
+                        <input id="roomNumber" required placeholder="106" />
+                    </div>
+
+                    <div>
+                        <label for="price">Price</label>
+                        <input id="price" type="number" min="0.01" step="0.01" required placeholder="199.99" />
+                    </div>
+
+                    <div>
+                        <label for="capacity">Capacity</label>
+                        <select id="capacity" required>
+                            <option value="">Select capacity</option>
+                            <option value="1">1 guest</option>
+                            <option value="2">2 guests</option>
+                            <option value="3">3 guests</option>
+                            <option value="4">4 guests</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="surfaceArea">Surface Area</label>
+                        <input id="surfaceArea" type="number" min="0.01" step="0.01" required placeholder="30" />
+                    </div>
+
+                    <div>
+                        <label for="viewType">View Type</label>
+                        <select id="viewType" required>
+                            <option value="">Select a view</option>
+                            <option value="City">City</option>
+                            <option value="Mountain">Mountain</option>
+                            <option value="Sea">Sea</option>
+                            <option value="Garden">Garden</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="extraBedPossible">Extra Bed Possible</label>
+                        <select id="extraBedPossible" required>
+                            <option value="">Select an option</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="conditionState">Condition State</label>
+                        <input id="conditionState" required placeholder="No damages" />
+                    </div>
+                </div>
+                <br />
+
+                <button type="submit" class="green-btn">ADD ROOM</button>
+            </form>
+
+            <div id="roomMessage" class="message"></div>
+        </div>
+
         <main class="content">
             <div class="detail-panel">
                 <div class="detail-summary">
@@ -84,6 +154,7 @@
                             <th>View</th>
                             <th>Extra Bed</th>
                             <th>Condition</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="roomTableBody"></tbody>
@@ -93,27 +164,108 @@
     </div>
 
     <script>
+
+        async function deleteRoom(hotelId, roomNumber) {
+            if (!confirm(`Delete room ${roomNumber} from hotel ${hotelId}?`)) return;
+
+            const message = document.getElementById('roomMessage');
+
+            try {
+                const res = await fetch(`/api/rooms/${hotelId}/${encodeURIComponent(roomNumber)}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to delete room.');
+
+                message.textContent = `Room ${roomNumber} deleted successfully.`;
+                await loadRooms();
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+        
+        async function loadHotelsForRooms() {
+            const res = await fetch('/api/hotels');
+            const hotels = await res.json();
+
+            const select = document.getElementById('hotelId');
+            select.innerHTML = '<option value="">Select a hotel</option>';
+
+            hotels.forEach(hotel => {
+                const option = document.createElement('option');
+                option.value = hotel.hotel_id;
+                option.textContent = `${hotel.hotel_name} (${hotel.area})`;
+                select.appendChild(option);
+            });
+        }
+
         async function loadRooms() {
             const res = await fetch('/api/rooms');
             const rooms = await res.json();
+
             const tbody = document.getElementById('roomTableBody');
             tbody.innerHTML = '';
-            rooms.forEach(r => {
+
+            rooms.forEach(room => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-          <td>${r.hotel_name}</td>
-          <td>${r.room_number}</td>
-          <td>$${r.price}</td>
-          <td>${r.capacity}</td>
-          <td>${r.surface_area}</td>
-          <td>${r.view_type}</td>
-          <td>${r.extra_bed_possible ? 'Yes' : 'No'}</td>
-          <td>${r.condition_state}</td>
-        `;
+        <td>${room.hotel_name}</td>
+        <td>${room.room_number}</td>
+        <td>$${room.price}</td>
+        <td>${room.capacity}</td>
+        <td>${room.surface_area}</td>
+        <td>${room.view_type}</td>
+        <td>${room.extra_bed_possible ? 'Yes' : 'No'}</td>
+        <td>${room.condition_state}</td>
+        <td>
+  <button class="green-btn" onclick="deleteRoom(${room.hotel_id}, '${room.room_number}')">DELETE</button>
+</td>
+      `;
                 tbody.appendChild(row);
             });
         }
-        loadRooms();
+
+        document.getElementById('roomForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const message = document.getElementById('roomMessage');
+
+            const payload = {
+                hotelId: document.getElementById('hotelId').value,
+                roomNumber: document.getElementById('roomNumber').value.trim(),
+                price: document.getElementById('price').value,
+                capacity: document.getElementById('capacity').value,
+                surfaceArea: document.getElementById('surfaceArea').value,
+                viewType: document.getElementById('viewType').value,
+                extraBedPossible: document.getElementById('extraBedPossible').value,
+                conditionState: document.getElementById('conditionState').value.trim()
+            };
+
+            try {
+                const res = await fetch('/api/rooms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to add room.');
+
+                message.textContent = 'Room added successfully.';
+                document.getElementById('roomForm').reset();
+                await loadRooms();
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        });
+
+        async function initPage() {
+            await loadHotelsForRooms();
+            await loadRooms();
+        }
+
+        initPage();
     </script>
 </body>
 

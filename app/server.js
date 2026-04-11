@@ -577,6 +577,76 @@ app.get('/api/rooms', async (req, res) => {
   }
 });
 
+app.post('/api/rooms', async (req, res) => {
+  try {
+    const {
+      hotelId,
+      roomNumber,
+      price,
+      capacity,
+      surfaceArea,
+      viewType,
+      extraBedPossible,
+      conditionState
+    } = req.body;
+
+    if (
+      !hotelId || !roomNumber || price === undefined || capacity === undefined ||
+      surfaceArea === undefined || !viewType || extraBedPossible === undefined || !conditionState
+    ) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const numericPrice = Number(price);
+    const numericCapacity = Number(capacity);
+    const numericSurfaceArea = Number(surfaceArea);
+    const extraBedBoolean =
+      extraBedPossible === true ||
+      extraBedPossible === 'true' ||
+      extraBedPossible === 'Yes';
+
+    if (!(numericPrice > 0)) {
+      return res.status(400).json({ error: 'Price must be greater than 0.' });
+    }
+
+    if (!Number.isInteger(numericCapacity) || numericCapacity < 1) {
+      return res.status(400).json({ error: 'Capacity must be at least 1.' });
+    }
+
+    if (!(numericSurfaceArea > 0)) {
+      return res.status(400).json({ error: 'Surface area must be greater than 0.' });
+    }
+
+    await pool.query(`
+      INSERT INTO room (
+        hotel_id,
+        room_number,
+        price,
+        capacity,
+        surface_area,
+        view_type,
+        extra_bed_possible,
+        condition_state
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [
+      hotelId,
+      roomNumber,
+      numericPrice,
+      numericCapacity,
+      numericSurfaceArea,
+      viewType,
+      extraBedBoolean,
+      conditionState
+    ]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error adding room:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.put('/api/reservations/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -710,6 +780,116 @@ app.get('/api/hotels', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching hotels:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/hotels', async (req, res) => {
+  try {
+    const { chainId, hotelName, category, address, area, roomCount } = req.body;
+
+    if (!chainId || !hotelName || !category || !address || !area || roomCount === undefined || roomCount === '') {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const numericCategory = Number(category);
+    const numericRoomCount = Number(roomCount);
+
+    if (!Number.isInteger(numericCategory) || numericCategory < 1 || numericCategory > 5) {
+      return res.status(400).json({ error: 'Category must be an integer between 1 and 5.' });
+    }
+
+    if (!Number.isInteger(numericRoomCount) || numericRoomCount < 0) {
+      return res.status(400).json({ error: 'Room count must be 0 or greater.' });
+    }
+
+    const idResult = await pool.query(`
+      SELECT COALESCE(MAX(hotel_id), 0) + 1 AS next_id
+      FROM hotel
+    `);
+
+    const nextId = idResult.rows[0].next_id;
+
+    await pool.query(`
+      INSERT INTO hotel (
+        hotel_id,
+        chain_id,
+        hotel_name,
+        category,
+        address,
+        area,
+        room_count
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `, [nextId, chainId, hotelName, numericCategory, address, area, numericRoomCount]);
+
+    res.json({ success: true, hotel_id: nextId });
+  } catch (error) {
+    console.error('Error adding hotel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/clients/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(`
+      DELETE FROM client
+      WHERE client_id = $1
+    `, [id]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting client:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/employees/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(`
+      DELETE FROM employee
+      WHERE employee_id = $1
+    `, [id]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting employee:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/hotels/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(`
+      DELETE FROM hotel
+      WHERE hotel_id = $1
+    `, [id]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting hotel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/rooms/:hotelId/:roomNumber', async (req, res) => {
+  try {
+    const { hotelId, roomNumber } = req.params;
+
+    await pool.query(`
+      DELETE FROM room
+      WHERE hotel_id = $1 AND room_number = $2
+    `, [hotelId, roomNumber]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting room:', error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -47,6 +47,64 @@
         </div>
         <div class="zigzag"></div>
 
+        <div class="form-card">
+            <h2>Add Hotel</h2>
+            <form id="hotelForm">
+                <div class="form-grid">
+                    <div>
+                        <label for="chainId">Hotel Chain</label>
+                        <select id="chainId" required>
+                            <option value="">Select a chain</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="hotelName">Hotel Name</label>
+                        <input id="hotelName" required placeholder="BlueWave Capital Hotel" />
+                    </div>
+
+                    <div>
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="area">Area</label>
+                        <select id="area" required>
+                            <option value="">Select area</option>
+                            <option value="Nepean">Nepean</option>
+                            <option value="Kanata">Kanata</option>
+                            <option value="Barrhaven">Barrhaven</option>
+                            <option value="Orleans">Orleans</option>
+                            <option value="Vanier">Vanier</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="address">Address</label>
+                        <input id="address" required placeholder="101 Wellington St, Ottawa, ON" />
+                    </div>
+
+                    <div>
+                        <label for="roomCount">Room Count</label>
+                        <input id="roomCount" type="number" min="0" required placeholder="5" />
+                    </div>
+                </div>
+                <br />
+
+                <button type="submit" class="green-btn">ADD HOTEL</button>
+            </form>
+
+            <div id="hotelMessage" class="message"></div>
+        </div>
+
         <main class="content">
             <div class="detail-panel">
                 <div class="detail-summary">
@@ -82,6 +140,7 @@
                             <th>Area</th>
                             <th>Address</th>
                             <th>Room Count</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="hotelTableBody"></tbody>
@@ -91,26 +150,104 @@
     </div>
 
     <script>
+        async function deleteHotel(hotelId) {
+            if (!confirm(`Delete hotel ${hotelId}?`)) return;
+
+            const message = document.getElementById('hotelMessage');
+
+            try {
+                const res = await fetch(`/api/hotels/${hotelId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to delete hotel.');
+
+                message.textContent = `Hotel ${hotelId} deleted successfully.`;
+                await loadHotels();
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+
+        async function loadChainsForHotels() {
+            const res = await fetch('/api/chains');
+            const chains = await res.json();
+
+            const select = document.getElementById('chainId');
+            select.innerHTML = '<option value="">Select a chain</option>';
+
+            chains.forEach(chain => {
+                const option = document.createElement('option');
+                option.value = chain.chain_id;
+                option.textContent = chain.chain_name;
+                select.appendChild(option);
+            });
+        }
+
         async function loadHotels() {
             const res = await fetch('/api/hotels/full');
             const hotels = await res.json();
+
             const tbody = document.getElementById('hotelTableBody');
             tbody.innerHTML = '';
-            hotels.forEach(h => {
+
+            hotels.forEach(hotel => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-          <td>${h.hotel_id}</td>
-          <td>${h.hotel_name}</td>
-          <td>${h.chain_name}</td>
-          <td>${h.category}</td>
-          <td>${h.area}</td>
-          <td>${h.address}</td>
-          <td>${h.room_count}</td>
-        `;
+        <td>${hotel.hotel_id}</td>
+        <td>${hotel.hotel_name}</td>
+        <td>${hotel.chain_name}</td>
+        <td>${hotel.category}</td>
+        <td>${hotel.area}</td>
+        <td>${hotel.address}</td>
+        <td>${hotel.room_count}</td>
+        <td>
+  <button class="green-btn" onclick="deleteHotel(${hotel.hotel_id})">DELETE</button>
+</td>
+      `;
                 tbody.appendChild(row);
             });
         }
-        loadHotels();
+
+        document.getElementById('hotelForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const message = document.getElementById('hotelMessage');
+
+            const payload = {
+                chainId: document.getElementById('chainId').value,
+                hotelName: document.getElementById('hotelName').value.trim(),
+                category: document.getElementById('category').value,
+                address: document.getElementById('address').value.trim(),
+                area: document.getElementById('area').value,
+                roomCount: document.getElementById('roomCount').value
+            };
+
+            try {
+                const res = await fetch('/api/hotels', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to add hotel.');
+
+                message.textContent = `Hotel ${data.hotel_id} added successfully.`;
+                document.getElementById('hotelForm').reset();
+                await loadHotels();
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        });
+
+        async function initPage() {
+            await loadChainsForHotels();
+            await loadHotels();
+        }
+
+        initPage();
     </script>
 </body>
 
