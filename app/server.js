@@ -364,6 +364,8 @@ app.post('/api/rentals/direct', async (req, res) => {
 });
 
 app.post('/api/rentals/convert', async (req, res) => {
+  const client = await pool.connect();
+
   try {
     const { reservationId, employeeId, status } = req.body;
 
@@ -371,26 +373,29 @@ app.post('/api/rentals/convert', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    const reservationResult = await pool.query(`
+    await client.query('BEGIN');
+
+    const reservationResult = await client.query(`
       SELECT client_id, hotel_id, room_number, check_in_date, check_out_date
       FROM reservation
       WHERE reservation_id = $1
     `, [reservationId]);
 
     if (reservationResult.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ error: 'Reservation not found.' });
     }
 
     const reservation = reservationResult.rows[0];
 
-    const idResult = await pool.query(`
+    const idResult = await client.query(`
       SELECT COALESCE(MAX(rental_id), 0) + 1 AS next_id
       FROM rental
     `);
 
     const nextId = idResult.rows[0].next_id;
 
-    await pool.query(`
+    await client.query(`
       INSERT INTO rental (
         rental_id,
         client_id,
@@ -415,10 +420,20 @@ app.post('/api/rentals/convert', async (req, res) => {
       status
     ]);
 
+    await client.query(`
+      DELETE FROM reservation
+      WHERE reservation_id = $1
+    `, [reservationId]);
+
+    await client.query('COMMIT');
+
     res.json({ success: true, rental_id: nextId });
   } catch (error) {
+    await client.query('ROLLBACK');
     console.error('Error converting reservation:', error);
     res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
   }
 });
 

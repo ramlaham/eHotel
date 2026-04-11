@@ -21,3 +21,6 @@ Fix add client table in clients:
     - Last name should have the name example and only letters allowed
     - Address should be this format, 8 Street Rd
     - ssn is already fixed
+
+
+    fix address issue
