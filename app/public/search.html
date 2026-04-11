@@ -90,17 +90,38 @@
 
                         <div>
                             <label for="capacity">Minimum Capacity</label>
-                            <input type="number" id="capacity" min="1" />
+                            <select id="capacity">
+                                <option value="">Any</option>
+                                <option value="1">1 guest</option>
+                                <option value="2">2 guests</option>
+                                <option value="3">3 guests</option>
+                                <option value="4">4 guests</option>
+                            </select>
                         </div>
 
                         <div>
                             <label for="surfaceArea">Minimum Surface Area</label>
-                            <input type="number" id="surfaceArea" min="1" step="0.01" />
+                            <select id="surfaceArea">
+                                <option value="">Any</option>
+                                <option value="20">20 m²</option>
+                                <option value="25">25 m²</option>
+                                <option value="30">30 m²</option>
+                                <option value="35">35 m²</option>
+                                <option value="40">40 m²</option>
+                                <option value="45">45 m²</option>
+                            </select>
                         </div>
 
                         <div>
                             <label for="maxPrice">Maximum Price</label>
-                            <input type="number" id="maxPrice" min="1" step="0.01" />
+                            <select id="maxPrice">
+                                <option value="">Any</option>
+                                <option value="100">$100</option>
+                                <option value="150">$150</option>
+                                <option value="200">$200</option>
+                                <option value="250">$250</option>
+                                <option value="300">$300</option>
+                            </select>
                         </div>
                     </div>
                     <br />
