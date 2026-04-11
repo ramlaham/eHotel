@@ -5,6 +5,8 @@ const pool = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
